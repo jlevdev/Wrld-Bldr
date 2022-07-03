@@ -1,0 +1,13 @@
+pylint
+django
+djangorestframework
+django-rest-knox
+pymysql
+psycopg2-binary
+django-cors-headers
+django-rest-auth
+pillow
+glob2
+drf-jwt
+PyJWT
+requests
