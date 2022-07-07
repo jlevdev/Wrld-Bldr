@@ -3,14 +3,15 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 
-function Settlement() {
+function AllSettlements() {
     let navigate = useNavigate();
 
+
     return (
-        <div id="Settlement">
+        <div id="AllSettlements">
 
         </div>
     );
 }
 
-export default Settlement;
+export default AllSettlements;

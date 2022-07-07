@@ -27,9 +27,9 @@ function Header() {
   return (
     <>
       <HeaderResponsive>
-        <AppBar position="static" color="default" elevation={0}>
+        <AppBar position="static" color="white" elevation={0}>
           <Toolbar>
-            <Typography variant="h6" color="inherit" noWrap>
+            <Typography variant="h6" color="secondary" noWrap>
               WrldBldr
             </Typography>
           </Toolbar>

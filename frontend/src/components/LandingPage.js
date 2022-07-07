@@ -2,6 +2,7 @@ import { Box, Button, Container, Typography } from "@mui/material";
 import React from "react";
 import { styled } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Responsive = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("sm")]: { ".wb-logo": { width: "50vw" } },
@@ -9,7 +10,9 @@ const Responsive = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: { ".wb-logo": { width: "40vw" } },
 }));
 
-function App() {
+function LandingPage() {
+  const navigate = useNavigate();
+
   const [w, setW] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -25,7 +28,7 @@ function App() {
   }, []);
 
   return (
-    <div id="App">
+    <div id="LandingPage">
       <Responsive>
         <Box
           sx={{
@@ -36,7 +39,7 @@ function App() {
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
             backgroundSize: "cover",
-            paddingTop: "30vh",
+            paddingTop: "35vh",
           }}
         >
           <Container>
@@ -45,7 +48,7 @@ function App() {
               justifyContent="center"
               sx={{
                 "& img": {
-                  mb: 10,
+                  mb: 3,
                   width: "70vw",
                 },
               }}
@@ -57,17 +60,23 @@ function App() {
                 className="wb-logo"
               />{" "}
             </Box>
-            <Box display="flex" justifyContent="center">
-              <Button variant="contained">Create</Button>
-              <Typography
-                variant="h6"
-                align="center"
-                color="textPrimary"
-                sx={{ marginLeft: "1em", marginRight: "1em", display: "block" }}
+            <Box
+              display="flex"
+              justifyContent="center"
+              sx={{
+                "& button + button": {
+                  ml: 1,
+                },
+              }}
+            >
+              <Button
+                variant="contained"
+                onClick={async () => {
+                  navigate(`/register`);
+                }}
               >
-                -----
-              </Typography>
-              <Button variant="contained">Sign Up</Button>
+                Sign Up
+              </Button>
             </Box>
           </Container>
         </Box>
@@ -76,4 +85,4 @@ function App() {
   );
 }
 
-export default App;
+export default LandingPage;
