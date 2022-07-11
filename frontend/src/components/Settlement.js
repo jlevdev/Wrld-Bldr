@@ -8,7 +8,9 @@ function Settlement() {
 
     return (
         <div id="Settlement">
-
+            <Box sx={{ background: '#FF0000' }}>
+                <Typography variant="h1">Loaded</Typography>
+            </Box>
         </div>
     );
 }

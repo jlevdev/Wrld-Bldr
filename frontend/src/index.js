@@ -4,10 +4,10 @@ import "./index.css";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 
-import LandingPage from "./components/LandingPage";
+import App from "./App";
 import Register from "./components/Register";
 import SignIn from "./components/SignIn";
 import Account from "./components/Account";
@@ -17,6 +17,27 @@ import Settlement from "./components/Settlement";
 
 
 const theme = createTheme({
+  typography: {
+    fontFamily: 'Roboto, Arial, sans-serif',
+    h1: {
+      fontFamily: 'PT Sans'
+    },
+    h2: {
+      fontFamily: 'PT Sans'
+    },
+    h3: {
+      fontFamily: 'PT Sans'
+    },
+    h4: {
+      fontFamily: 'PT Sans'
+    },
+    h5: {
+      fontFamily: 'PT Sans'
+    },
+    h6: {
+      fontFamily: 'PT Sans'
+    },
+  },
   palette: {
     primary: {
       main: "#42FFFF",
@@ -28,7 +49,10 @@ const theme = createTheme({
     },
     white: {
       main: "#DADADA"
-    }
+    },
+    background: {
+      main: "#DADADA"
+    },
   },
 });
 
@@ -38,15 +62,27 @@ const routing = (
       <CssBaseline />
       <ThemeProvider theme={theme}>
         <Header />
-        <Routes>
-          <Route exact path="/" element={<LandingPage />} />
-          <Route exact path="/register" element={<Register />} />
-          <Route exact path="/signin" element={<SignIn />} />
-          <Route exact path="/account/:id" element={<Account />} />
-          <Route exact path="/settlement/:id" element={<Settlement />} />
-          <Route exact path="/settlements/:id" element={<AllSettlements />} />
-          <Route exact path="/playerview/:id" element={<SettlementPlayer />} />
-        </Routes>
+        <Box
+          sx={{
+            width: 1,
+            height: "100vh",
+            backgroundImage:
+              "url(https://wallpaperaccess.com/full/1399270.jpg)",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+
+          }}
+        >
+          <Routes>
+            <Route exact path="/" element={<App />} />
+            <Route exact path="/register" element={<Register />} />
+            <Route exact path="/signin" element={<SignIn />} />
+            <Route exact path="/account/:id" element={<Account />} />
+            <Route exact path="/settlement/:id" element={<Settlement />} />
+            <Route exact path="/playerview/:id" element={<SettlementPlayer />} />
+          </Routes>
+        </Box>
         <Footer />
       </ThemeProvider>
     </React.StrictMode>
