@@ -47,7 +47,7 @@ function App() {
   }, [setAppState]);
 
   function renderAppContent(signedIn) {
-    if (signedIn) {
+    if (!signedIn) {
       return (
         <Container sx={{ paddingTop: '35vh' }}>
           <Box
@@ -97,7 +97,7 @@ function App() {
   return (
     <div id="App">
       <Responsive>
-        {renderAppContent(false)}
+        {renderAppContent(true)}
       </Responsive>
     </div>
   );
