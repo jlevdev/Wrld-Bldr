@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -129,11 +131,29 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
+        'rest_framework.permissions.IsAuthenticated'
     ]
 }
 
 CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:80',
-    'http://localhost:80'
+    'http://127.0.0.1',
+    'http://localhost'
 ]
+
+STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = '/media/'
+
+AVATAR_MEDIA_URL = 'avatars/'
+
+BACKGROUND_MEDIA_URL = 'backgrounds/'
+
+ICON_MEDIA_URL = 'icons/'
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+SITE_ID = 1
+
+GOOGLE_OAUTH2_CLIENT_ID = '521698236091-bd249h6lh9q3rdktd0fph0fndvp5orkg.apps.googleusercontent.com'

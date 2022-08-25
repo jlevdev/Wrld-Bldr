@@ -1,7 +1,7 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import AppContext from "../AppContext";
+import AppContext from "../../AppContext";
 
 function Settlement() {
     let navigate = useNavigate();

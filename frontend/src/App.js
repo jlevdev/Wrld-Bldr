@@ -47,7 +47,7 @@ function App() {
   }, [setAppState]);
 
   function renderAppContent(signedIn) {
-    if (!signedIn) {
+    if (signedIn) {
       return (
         <Container sx={{ paddingTop: '35vh' }}>
           <Box
@@ -76,6 +76,14 @@ function App() {
               },
             }}
           >
+            <Button
+              variant="contained"
+              onClick={async () => {
+                navigate(`/signin`);
+              }}
+            >
+              Login
+            </Button>
             <Button
               variant="contained"
               onClick={async () => {
