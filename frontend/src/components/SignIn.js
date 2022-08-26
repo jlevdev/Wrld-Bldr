@@ -1,17 +1,15 @@
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Container, TextField } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-
 function SignIn() {
-    let navigate = useNavigate();
+  let navigate = useNavigate();
 
-
-    return (
-        <div id="SignIn">
-
-        </div>
-    );
+  return (
+    <div id="SignIn">
+      <Container sx={{ paddingTop: "35vh" }}></Container>
+    </div>
+  );
 }
 
 export default SignIn;
