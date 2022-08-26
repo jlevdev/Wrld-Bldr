@@ -1,6 +1,7 @@
 pylint
 django
 djangorestframework
+djangorestframework-simplejwt
 django-rest-knox
 pymysql
 psycopg2-binary
