@@ -3,9 +3,6 @@ from wrldbldr.models import Settlement, Location
 from .serializers import LocationSerializer, SettlementSerializer
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import AllowAny
-from django.contrib.auth.models import User
-from .serializers import RegisterSerializer
 
 
 class SettlementList(generics.ListCreateAPIView):
@@ -29,9 +26,3 @@ class LocationList(generics.ListCreateAPIView):
 class SettlementDetail(generics.RetrieveAPIView):
     queryset = Settlement.objects.all()
     serializer_class = SettlementSerializer
-
-
-class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    permission_classes = (AllowAny,)
-    serializer_class = RegisterSerializer
