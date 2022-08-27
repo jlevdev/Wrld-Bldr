@@ -8,9 +8,16 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../axios";
+import { useHistory } from "react-router-dom";
 
 function Register() {
   let navigate = useNavigate();
+  const initialFormData = Object.freeze({
+    email: "",
+    username: "",
+    password: "",
+  });
 
   return (
     <div id="Register">
