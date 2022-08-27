@@ -41,7 +41,7 @@ function Register() {
     })
 
     axiosInstance
-      .post("register/", {
+      .post("auth/register/", {
         email: formData.email,
         username: formData.email,
         password: formData.password,
