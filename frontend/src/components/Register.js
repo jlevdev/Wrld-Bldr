@@ -12,10 +12,12 @@ import axiosInstance from "../axios";
 
 function Register() {
   let navigate = useNavigate();
+
   const initialFormData = Object.freeze({
     email: "",
     username: "",
     password: "",
+    password2: ""
   });
 
   const [formData, updateFormData] = useState(initialFormData);
@@ -31,15 +33,22 @@ function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
+    console.log({
+      email: formData.email,
+      username: formData.email,
+      password: formData.password,
+      password2: formData.password2
+    })
 
     axiosInstance
       .post("register/", {
         email: formData.email,
-        user_name: formData.email,
+        username: formData.email,
         password: formData.password,
+        password2: formData.password2
       })
       .then((res) => {
-        navigate.push("/signin/");
+        navigate("/signin/");
         console.log(res, res.data);
       });
   };
@@ -57,7 +66,7 @@ function Register() {
             p: 2,
           }}
         >
-          <form>
+          <form noValidate>
             <Grid
               container
               rowSpacing={2}
@@ -70,7 +79,7 @@ function Register() {
               </Grid>
               <Grid item>
                 <TextField
-                  id="email-input"
+                  id="email"
                   name="email"
                   label="Email"
                   type="email"
@@ -80,7 +89,7 @@ function Register() {
               </Grid>
               <Grid item>
                 <TextField
-                  id="password-input"
+                  id="password"
                   name="password"
                   label="Password"
                   type="password"
@@ -90,8 +99,8 @@ function Register() {
               </Grid>
               <Grid item>
                 <TextField
-                  id="password-input"
-                  name="password"
+                  id="password2"
+                  name="password2"
                   label="Confirm Password"
                   type="password"
                   required

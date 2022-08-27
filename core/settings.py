@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-xk4n%naepot(c@idl+wk@r9*=1ywimg3un!q*kg^bs5#gull&^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -157,6 +157,8 @@ BACKGROUND_MEDIA_URL = 'backgrounds/'
 ICON_MEDIA_URL = 'icons/'
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+
 
 SITE_ID = 1
 
