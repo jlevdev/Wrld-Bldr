@@ -112,6 +112,11 @@ function RootComponent() {
                   />
                   <Route
                     exact
+                    path="/all-settlements/"
+                    element={<AllSettlements />}
+                  />
+                  <Route
+                    exact
                     path="/playerview/:id"
                     element={<SettlementPlayer />}
                   />

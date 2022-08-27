@@ -9,7 +9,7 @@ function AllSettlements() {
 
     return (
         <div id="AllSettlements">
-
+            <Typography variant="h3">All Settlements...</Typography>
         </div>
     );
 }
