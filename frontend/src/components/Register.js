@@ -6,10 +6,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../axios";
-import { useHistory } from "react-router-dom";
 
 function Register() {
   let navigate = useNavigate();
@@ -18,6 +17,32 @@ function Register() {
     username: "",
     password: "",
   });
+
+  const [formData, updateFormData] = useState(initialFormData);
+
+  const handleChange = (e) => {
+    updateFormData({
+      ...formData,
+      //trimming and white space
+      [e.target.name]: e.target.value.trim(),
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+
+    axiosInstance
+      .post("register/", {
+        email: formData.email,
+        user_name: formData.email,
+        password: formData.password,
+      })
+      .then((res) => {
+        navigate.push("/signin/");
+        console.log(res, res.data);
+      });
+  };
 
   return (
     <div id="Register">
@@ -50,6 +75,7 @@ function Register() {
                   label="Email"
                   type="email"
                   required
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item>
@@ -59,6 +85,7 @@ function Register() {
                   label="Password"
                   type="password"
                   required
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item>
@@ -68,10 +95,16 @@ function Register() {
                   label="Confirm Password"
                   type="password"
                   required
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item>
-                <Button variant="contained" color="primary" type="submit">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  onClick={handleSubmit}
+                >
                   Submit
                 </Button>
               </Grid>
