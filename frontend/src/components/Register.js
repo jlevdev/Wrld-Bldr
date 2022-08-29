@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "../axios";
+import AxiosInstance from "../Axios";
 
 function Register() {
   let navigate = useNavigate();
@@ -17,7 +17,7 @@ function Register() {
     email: "",
     username: "",
     password: "",
-    password2: ""
+    password2: "",
   });
 
   const [formData, updateFormData] = useState(initialFormData);
@@ -37,20 +37,18 @@ function Register() {
       email: formData.email,
       username: formData.email,
       password: formData.password,
-      password2: formData.password2
-    })
+      password2: formData.password2,
+    });
 
-    axiosInstance
-      .post("auth/register/", {
-        email: formData.email,
-        username: formData.email,
-        password: formData.password,
-        password2: formData.password2
-      })
-      .then((res) => {
-        navigate("/signin/");
-        console.log(res, res.data);
-      });
+    AxiosInstance.post("auth/register/", {
+      email: formData.email,
+      username: formData.email,
+      password: formData.password,
+      password2: formData.password2,
+    }).then((res) => {
+      navigate("/signin/");
+      console.log(res, res.data);
+    });
   };
 
   return (
