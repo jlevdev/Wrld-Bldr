@@ -7,7 +7,7 @@ import Header from "./components/Layout/Header";
 import Footer from "./components/Layout/Footer";
 import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import AppContext from "./AppContext";
+import AppContext from "./components/Context/AppContext";
 
 import Register from "./components/Register";
 import SignIn from "./components/SignIn";
@@ -17,6 +17,7 @@ import SettlementPlayer from "./components/SettlementPlayer";
 import Settlement from "./components/Settlement";
 import { func } from "prop-types";
 import LandingPage from "./components/LandingPage";
+import axiosInstance from "./Axios";
 
 const theme = createTheme({
   typography: {
@@ -65,7 +66,7 @@ const Responsive = styled("div")(({ theme }) => ({
 }));
 
 function RootComponent() {
-  const [user, setUser] = useState({ username: "jame" });
+  const [user, setUser] = useState(null);
 
   const [w, setW] = useState(window.innerWidth);
 
@@ -81,25 +82,27 @@ function RootComponent() {
     };
   }, []);
 
+
   return (
     <Router>
       <React.StrictMode>
         <CssBaseline />
         <ThemeProvider theme={theme}>
-          <Header />
-          <Box
-            sx={{
-              width: 1,
-              height: "100vh",
-              backgroundImage:
-                "url(https://wallpaperaccess.com/full/1399270.jpg)",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-              backgroundSize: "cover",
-            }}
-          >
-            <Responsive>
-              <AppContext.Provider value={{ user, setUser }}>
+          <AppContext.Provider value={{ user, setUser }}>
+            <Header />
+            <Box
+              sx={{
+                width: 1,
+                height: "100vh",
+                backgroundImage:
+                  "url(https://wallpaperaccess.com/full/1399270.jpg)",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+              }}
+            >
+              <Responsive>
+
                 <Routes>
                   <Route exact path="/" element={<LandingPage />} />
                   <Route exact path="/register" element={<Register />} />
@@ -121,10 +124,11 @@ function RootComponent() {
                     element={<SettlementPlayer />}
                   />
                 </Routes>
-              </AppContext.Provider>
-            </Responsive>
-          </Box>
-          <Footer />
+
+              </Responsive>
+            </Box>
+            <Footer />
+          </AppContext.Provider>
         </ThemeProvider>
       </React.StrictMode>
     </Router>

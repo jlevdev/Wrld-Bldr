@@ -6,12 +6,16 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "../axios";
+import axiosInstance from "../Axios";
+import AppContext from "./Context/AppContext";
+
 
 function SignIn() {
   let navigate = useNavigate();
+
+  const { user, setUser } = useContext(AppContext);
 
   const initialFormData = Object.freeze({
     username: "",
@@ -40,6 +44,12 @@ function SignIn() {
         localStorage.setItem('access_token', res.data.access);
         localStorage.setItem('refresh_token', res.data.refresh);
         axiosInstance.defaults.headers['Authorization'] = 'JWT ' + localStorage.getItem('access_token')
+
+        axiosInstance.get('/auth/user/me/').then((res) => {
+          console.log(res.data);
+          setUser({ email: res.data.email });
+        })
+
         navigate("/all-settlements/");
       });
   };

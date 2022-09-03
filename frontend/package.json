@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.8.2",
     "axios": "^0.27.2",
     "react-scripts": "5.0.1",
@@ -12,6 +13,8 @@
   },
   "scripts": {
     "start": "concurrently \"set PORT=80 && react-scripts start\" \"python ../manage.py runserver 0.0.0.0:8000\"",
+    "backend": "python ../manage.py runserver 0.0.0.0:8000",
+    "frontend": "set PORT=80 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
