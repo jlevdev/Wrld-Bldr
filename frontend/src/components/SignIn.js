@@ -8,9 +8,8 @@ import {
 } from "@mui/material";
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "../Axios";
 import AppContext from "./Context/AppContext";
-
+import AxiosInstance from "../Axios";
 
 function SignIn() {
   let navigate = useNavigate();
@@ -35,7 +34,7 @@ function SignIn() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axiosInstance
+    AxiosInstance
       .post("token/", {
         username: formData.email,
         password: formData.password,
@@ -43,9 +42,9 @@ function SignIn() {
       .then((res) => {
         localStorage.setItem('access_token', res.data.access);
         localStorage.setItem('refresh_token', res.data.refresh);
-        axiosInstance.defaults.headers['Authorization'] = 'JWT ' + localStorage.getItem('access_token')
+        AxiosInstance.defaults.headers['Authorization'] = 'JWT ' + localStorage.getItem('access_token')
 
-        axiosInstance.get('/auth/user/me/').then((res) => {
+        AxiosInstance.get('/auth/user/me/').then((res) => {
           console.log(res.data);
           setUser({ email: res.data.email });
         })
@@ -53,7 +52,6 @@ function SignIn() {
         navigate("/all-settlements/");
       });
   };
-
 
   return (
     <div id="SignIn">
@@ -100,7 +98,12 @@ function SignIn() {
                 />
               </Grid>
               <Grid item>
-                <Button variant="contained" color="primary" type="submit" onClick={handleSubmit}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  onClick={handleSubmit}
+                >
                   Submit
                 </Button>
               </Grid>
