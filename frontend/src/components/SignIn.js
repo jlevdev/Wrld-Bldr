@@ -10,6 +10,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import AppContext from "./Context/AppContext";
 import AxiosInstance from "../Axios";
+import { AUTH_TOKEN_STORAGE, REFRESH_TOKEN_STORAGE } from "../Constants";
 
 function SignIn() {
   let navigate = useNavigate();
@@ -34,23 +35,21 @@ function SignIn() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    AxiosInstance
-      .post("token/", {
-        username: formData.email,
-        password: formData.password,
-      })
-      .then((res) => {
-        localStorage.setItem('access_token', res.data.access);
-        localStorage.setItem('refresh_token', res.data.refresh);
-        AxiosInstance.defaults.headers['Authorization'] = 'JWT ' + localStorage.getItem('access_token')
+    AxiosInstance.post("token/", {
+      username: formData.email,
+      password: formData.password,
+    }).then((res) => {
+      localStorage.setItem(AUTH_TOKEN_STORAGE, res.data.access);
+      localStorage.setItem(REFRESH_TOKEN_STORAGE, res.data.refresh);
+      AxiosInstance.defaults.headers["Authorization"] =
+        "JWT " + localStorage.getItem(AUTH_TOKEN_STORAGE);
 
-        AxiosInstance.get('/auth/user/me/').then((res) => {
-          console.log(res.data);
-          setUser({ email: res.data.email });
-        })
-
-        navigate("/all-settlements/");
+      AxiosInstance.get("/auth/user/me/").then((res) => {
+        setUser({ email: res.data.email, username: res.data.username });
       });
+
+      navigate("/all-settlements/");
+    });
   };
 
   return (

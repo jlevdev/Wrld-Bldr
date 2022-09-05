@@ -157,8 +157,9 @@ BACKGROUND_MEDIA_URL = 'backgrounds/'
 
 ICON_MEDIA_URL = 'icons/'
 
-CORS_ORIGIN_ALLOW_ALL = True
+SETTLEMENT_MEDIA_URL = 'settlement/'
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 SITE_ID = 1
@@ -168,7 +169,7 @@ GOOGLE_OAUTH2_CLIENT_ID = '521698236091-bd249h6lh9q3rdktd0fph0fndvp5orkg.apps.go
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=10),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=90),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': False,

@@ -1,71 +1,46 @@
 import { Box, Button, Container, Typography } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import AppContext from "../Context/AppContext";
+import SignIn from "../SignIn";
 
 function LandingPage() {
   const navigate = useNavigate();
+  const { user } = useContext(AppContext);
 
-  function renderContent(signedIn) {
-    if (!signedIn) {
-      return (
-        <Container sx={{ paddingTop: '35vh' }}>
-          <Box
-            display="flex"
-            justifyContent="center"
-            sx={{
-              "& img": {
-                mb: 3,
-                width: "70vw",
-              },
-            }}
-          >
-            {" "}
-            <img
-              src="https://i.ibb.co/ZmFFp51/Untitled.png"
-              alt=""
-              className="wb-logo"
-            />{" "}
-          </Box>
-          <Box
-            display="flex"
-            justifyContent="center"
-            sx={{
-              "& button + button": {
-                ml: 1,
-              },
-            }}
-          >
-            <Button
-              variant="contained"
-              onClick={async () => {
-                navigate(`/signin`);
-              }}
-            >
-              Login
-            </Button>
-            <Button
-              variant="contained"
-              onClick={async () => {
-                navigate(`/register`);
-              }}
-            >
-              Sign Up
-            </Button>
-          </Box>
-        </Container>
-      )
-    } else {
-      return (
-        <></>
-            )
-    }
+  function renderContent() {
+    return (
+      <Container sx={{ paddingTop: "35vh" }}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          sx={{
+            "& img": {
+              mb: 3,
+              width: "70vw",
+            },
+          }}
+        >
+          {" "}
+          <img
+            src="https://i.ibb.co/ZmFFp51/Untitled.png"
+            alt=""
+            className="wb-logo"
+          />{" "}
+        </Box>
+        <Box display="flex" justifyContent="center">
+          {(!user && <Typography>Not signed in</Typography>) ||
+            (user && (
+              <>
+                <Typography>signed in</Typography>
+              </>
+            ))}
+        </Box>
+      </Container>
+    );
   }
 
-  return (
-    <>
-        {renderContent(false)}
-    </>
-  );
+  return <>{renderContent()}</>;
 }
 
 export default LandingPage;

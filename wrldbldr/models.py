@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-import random, json
+import random
+import json
 from .constants import BackendConstants
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
@@ -79,7 +80,7 @@ class Location_Manager(models.Manager):
                     name='',
                     description=''):
         if name == '':
-            #generate name here
+            # generate name here
             name = 'The Invulnerable Vagrant'
         shop = Location(name=name,
                         description=description,
@@ -305,7 +306,8 @@ class Settlement(models.Model):
                               on_delete=models.CASCADE,
                               default=None,
                               null=True)
-
+    thumbnail = models.ImageField(
+        upload_to=settings.AVATAR_MEDIA_URL, null=True, default=None)
     objects = SettlementManager()
 
     def __str__(self) -> str:

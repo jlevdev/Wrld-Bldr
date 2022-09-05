@@ -32,17 +32,10 @@ function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    console.log({
-      email: formData.email,
-      username: formData.email,
-      password: formData.password,
-      password2: formData.password2,
-    });
 
     AxiosInstance.post("auth/register/", {
       email: formData.email,
-      username: formData.email,
+      username: formData.username,
       password: formData.password,
       password2: formData.password2,
     }).then((res) => {
@@ -81,6 +74,16 @@ function Register() {
                   name="email"
                   label="Email"
                   type="email"
+                  required
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  id="username"
+                  name="username"
+                  label="Username"
+                  type="ematextil"
                   required
                   onChange={handleChange}
                 />
