@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
 import "./index.css";
 import { styled } from "@mui/material";
 import { Route, Routes, useNavigate } from "react-router-dom";
@@ -7,18 +6,16 @@ import Header from "./components/Layout/Header";
 import Footer from "./components/Layout/Footer";
 import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import AppContext from "./components/Context/AppContext";
-
 import Register from "./components/Register";
-import SignIn from "./components/SignIn";
+import Login from "./components/Login";
 import Account from "./components/Account";
 import AllSettlements from "./components/AllSettlements";
 import SettlementPlayer from "./components/SettlementPlayer";
 import Settlement from "./components/Settlement";
 import LandingPage from "./components/LandingPage";
-import AxiosInstance from "./Axios";
-import { AUTH_TOKEN_STORAGE, REFRESH_TOKEN_STORAGE } from "./Constants";
-import SignOut from "./components/SignOut";
+import Logout from "./components/Logout";
+import { Auth0Provider } from "@auth0/auth0-react";
+
 
 const theme = createTheme({
   typography: {
@@ -85,31 +82,23 @@ function App() {
     };
   }, []);
 
-  useEffect(() => {
-    if (localStorage.getItem(REFRESH_TOKEN_STORAGE)) {
-      AxiosInstance.get("/auth/user/me/").then((res) => {
-        setUser({ email: res.data.email, username: res.data.username });
-      });
-    }
-  }, []);
-
   const redirectIfNotAuthenticated = () => {
-    if (!localStorage.getItem(AUTH_TOKEN_STORAGE)) {
-      navigate("/signin");
-    }
+
   };
 
   const redirectIfAuthenticated = () => {
-    if (localStorage.getItem(AUTH_TOKEN_STORAGE)) {
-      navigate("/all-settlements");
-    }
+
   };
 
   return (
     <React.StrictMode>
       <CssBaseline />
       <ThemeProvider theme={theme}>
-        <AppContext.Provider value={{ user, setUser }}>
+        <Auth0Provider
+          domain="dev-dtp9c6a7.us.auth0.com"
+          clientId="3WN7Z4GU9LU9CFsqjpzZla4uOZZQDQNe"
+          redirectUri={'localhost/'}
+        >
           <Header />
           <Box
             sx={{
@@ -133,11 +122,11 @@ function App() {
                 />
                 <Route
                   exact
-                  path="/signin"
-                  element={<SignIn />}
+                  path="/login"
+                  element={<Login />}
                   onEnter={redirectIfAuthenticated}
                 />
-                <Route exact path="/signout" element={<SignOut />} />
+                <Route exact path="/logout" element={<Logout />} />
                 <Route exact path="/account" element={<Account />} />
                 <Route
                   exact
@@ -153,14 +142,14 @@ function App() {
                 />
                 <Route
                   exact
-                  path="/playerview/:id"
+                  path="/playerview"
                   element={<SettlementPlayer />}
                 />
               </Routes>
             </Responsive>
           </Box>
           <Footer />
-        </AppContext.Provider>
+        </Auth0Provider>
       </ThemeProvider>
     </React.StrictMode>
   );

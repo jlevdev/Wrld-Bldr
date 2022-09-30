@@ -39,7 +39,7 @@ function Register() {
       password: formData.password,
       password2: formData.password2,
     }).then((res) => {
-      navigate("/signin/");
+      navigate("/login/");
       console.log(res, res.data);
     });
   };

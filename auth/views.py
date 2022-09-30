@@ -13,7 +13,6 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
 class BlacklistTokenUpdateView(APIView):
-    permission_classes = [AllowAny]
     authentication_classes = ()
 
     def post(self, request):

@@ -3,18 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@auth0/auth0-react": "^1.11.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.8.2",
     "axios": "^0.27.2",
+    "i": "^0.3.7",
+    "jwt-decode": "^3.1.2",
+    "npm": "^8.19.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "concurrently \"set PORT=80 && react-scripts start\" \"python ../manage.py runserver 0.0.0.0:8000\"",
+    "start": "concurrently \"set HTTPS=true && set PORT=80 && react-scripts start\" \"python ../manage.py runserver 0.0.0.0:8000\"",
     "backend": "python ../manage.py runserver 0.0.0.0:8000",
-    "frontend": "set PORT=80 && react-scripts start",
+    "frontend": "set HTTPS=true && set SSL_CRT_FILE=C:/Users/Jam/Dev/_WrldBldr/frontend/cert.crt && set SSL_KEY_FILE=C:/Users/Jam/Dev/_WrldBldr/frontend/cert.key && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

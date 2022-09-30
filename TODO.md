@@ -1,0 +1,1 @@
+The axios model where it refreshes refresh token on a bad call automatically is ideal but there should be some way to combine that with state??? idk. Maybe we just determine auth based on user obj??? when to kick someone out when not authenticated?

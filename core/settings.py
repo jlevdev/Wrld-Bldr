@@ -170,7 +170,7 @@ GOOGLE_OAUTH2_CLIENT_ID = '521698236091-bd249h6lh9q3rdktd0fph0fndvp5orkg.apps.go
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=90),
-    'ROTATE_REFRESH_TOKENS': False,
+    'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': False,
 

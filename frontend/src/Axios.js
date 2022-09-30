@@ -1,4 +1,5 @@
 import axios from "axios";
+import { AUTH_TOKEN_STORAGE } from "./Constants";
 
 const baseURL = "http://127.0.0.1:8000/api/";
 
@@ -6,8 +7,8 @@ const AxiosInstance = axios.create({
   baseURL,
   timeout: 5000,
   headers: {
-    Authorization: localStorage.getItem("access_token")
-      ? "JWT " + localStorage.getItem("access_token")
+    Authorization: localStorage.getItem(AUTH_TOKEN_STORAGE)
+      ? "JWT " + JSON.parse(localStorage.getItem(AUTH_TOKEN_STORAGE)).access
       : null,
     "Content-Type": "application/json",
     accept: "application/json",
@@ -24,8 +25,8 @@ AxiosInstance.interceptors.response.use(
     if (typeof error.response === "undefined") {
       alert(
         "A server/network error occurred. " +
-          "Looks like CORS might be the problem. " +
-          "Sorry about this - we will get it fixed shortly."
+        "Looks like CORS might be the problem. " +
+        "Sorry about this - we will get it fixed shortly."
       );
       return Promise.reject(error);
     }
@@ -43,7 +44,7 @@ AxiosInstance.interceptors.response.use(
       error.response.status === 401 &&
       error.response.statusText === "Unauthorized"
     ) {
-      const refreshToken = localStorage.getItem("refresh_token");
+      const refreshToken = JSON.parse(localStorage.getItem(AUTH_TOKEN_STORAGE)).refresh;
 
       if (refreshToken) {
         const tokenParts = JSON.parse(atob(refreshToken.split(".")[1]));
@@ -57,8 +58,7 @@ AxiosInstance.interceptors.response.use(
             refresh: refreshToken,
           })
             .then((response) => {
-              localStorage.setItem("access_token", response.data.access);
-              localStorage.setItem("refresh_token", response.data.refresh);
+              localStorage.setItem(AUTH_TOKEN_STORAGE, JSON.stringify(response.data))
 
               AxiosInstance.defaults.headers["Authorization"] =
                 "JWT " + response.data.access;

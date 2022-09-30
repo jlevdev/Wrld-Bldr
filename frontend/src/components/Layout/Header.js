@@ -1,9 +1,7 @@
 import React from "react";
 import { AppBar, Box, Toolbar, Typography, Button } from "@mui/material";
-import { styled } from "@mui/material";
-import { green, red } from "@mui/material/colors";
-import { useEffect, useState, useContext } from "react";
-import AppContext from "../Context/AppContext";
+import LoginButton from "../Auth0/LoginButton";
+import { useState, useContext } from "react";
 import IconButton from "@mui/material/IconButton";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
@@ -12,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 
 function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
-  const { user } = useContext(AppContext);
 
   let navigate = useNavigate();
 
@@ -45,7 +42,7 @@ function Header() {
               WrldBldr
             </Typography>
           </Box>
-          {user && (
+          {false ? (
             <div>
               <IconButton
                 size="large"
@@ -92,15 +89,14 @@ function Header() {
                 <MenuItem
                   onClick={async (e) => {
                     handleClose(e);
-                    navigate(`/signout`);
+                    navigate(`/logout`);
                   }}
                 >
                   Sign Out
                 </MenuItem>
               </Menu>
             </div>
-          )}
-          {!user && (
+          ) : (
             <Box
               sx={{
                 "& button + button": {
@@ -108,14 +104,7 @@ function Header() {
                 },
               }}
             >
-              <Button
-                variant="contained"
-                onClick={async () => {
-                  navigate(`/signin`);
-                }}
-              >
-                Login
-              </Button>
+              <LoginButton></LoginButton>
               <Button
                 variant="contained"
                 onClick={async () => {

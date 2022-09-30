@@ -1,12 +1,9 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import AppContext from "../Context/AppContext";
-import SignIn from "../SignIn";
 
 function LandingPage() {
   const navigate = useNavigate();
-  const { user } = useContext(AppContext);
 
   function renderContent() {
     return (
@@ -29,12 +26,12 @@ function LandingPage() {
           />{" "}
         </Box>
         <Box display="flex" justifyContent="center">
-          {(!user && <Typography>Not signed in</Typography>) ||
-            (user && (
+          {!false ? (<Typography>Not signed in</Typography>) :
+            (
               <>
                 <Typography>signed in</Typography>
               </>
-            ))}
+            )}
         </Box>
       </Container>
     );
