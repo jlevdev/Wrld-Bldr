@@ -1,15 +1,28 @@
 import React from "react";
-import { AppBar, Box, Toolbar, Typography, Button } from "@mui/material";
-import LoginButton from "../Auth0/LoginButton";
-import { useState, useContext } from "react";
-import IconButton from "@mui/material/IconButton";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
+import LoginButton from "../UI_Elements/LoginButton";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import LogoutButton from "../LogoutButton";
+import { useAuth0 } from "@auth0/auth0-react";
+import styled from "styled-components";
+
+const Styled = {};
+
+Styled.AppBar = styled.div`
+
+`;
+
+Styled.AppBar = styled.div`
+  
+`;
+
+Styled.AppBar = styled.div`
+  
+`;
 
 function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
+  const { user, isAuthenticated, isLoading } = useAuth0();
 
   let navigate = useNavigate();
 
@@ -42,7 +55,7 @@ function Header() {
               WrldBldr
             </Typography>
           </Box>
-          {false ? (
+          {isAuthenticated ? (
             <div>
               <IconButton
                 size="large"
@@ -52,12 +65,21 @@ function Header() {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <AccountCircle />
+                {user.picture ? (
+                  <Box
+                    component="img"
+                    sx={{
+                      borderRadius: '50%',
+                      width: '24px'
+                    }}
+                    referrerpolicy="no-referrer"
+                    src={user.picture}
+                  />
+                ) : (<AccountCircle />)}
               </IconButton>
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}
-                getContentAnchorEl={null}
                 anchorOrigin={{
                   vertical: "bottom",
                   horizontal: "center",
@@ -86,13 +108,8 @@ function Header() {
                 >
                   Settings
                 </MenuItem>
-                <MenuItem
-                  onClick={async (e) => {
-                    handleClose(e);
-                    navigate(`/logout`);
-                  }}
-                >
-                  Sign Out
+                <MenuItem>
+                  <LogoutButton />
                 </MenuItem>
               </Menu>
             </div>
@@ -104,15 +121,8 @@ function Header() {
                 },
               }}
             >
-              <LoginButton></LoginButton>
-              <Button
-                variant="contained"
-                onClick={async () => {
-                  navigate(`/register`);
-                }}
-              >
-                Sign Up
-              </Button>
+              <LoginButton />
+              <LoginButton text="Sign Up" />
             </Box>
           )}
         </Toolbar>

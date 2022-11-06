@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AxiosInstance from "../Axios";
+import AxiosInstance from "../../Axios";
 
 function Register() {
   let navigate = useNavigate();

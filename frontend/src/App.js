@@ -97,7 +97,7 @@ function App() {
         <Auth0Provider
           domain="dev-dtp9c6a7.us.auth0.com"
           clientId="3WN7Z4GU9LU9CFsqjpzZla4uOZZQDQNe"
-          redirectUri={'localhost/'}
+          redirectUri={window.location.origin}
         >
           <Header />
           <Box
