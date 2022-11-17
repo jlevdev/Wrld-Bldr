@@ -1,9 +1,16 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import Button from "./Button";
 
-export default function Logout() {
-  let navigate = useNavigate();
+const LogoutButton = (props) => {
+  const { text } = props;
+  const { logout } = useAuth0();
 
+  return (
+    <Button onClick={() => logout({ returnTo: window.location.origin })}>
+      {text ?? "Logout"}
+    </Button>
+  );
+};
 
-  return <div>Logout</div>;
-}
+export default LogoutButton;

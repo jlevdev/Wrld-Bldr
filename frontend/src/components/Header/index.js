@@ -8,17 +8,7 @@ import styled from "styled-components";
 
 const Styled = {};
 
-Styled.AppBar = styled.div`
-
-`;
-
-Styled.AppBar = styled.div`
-  
-`;
-
-Styled.AppBar = styled.div`
-  
-`;
+Styled.AppBar = styled.div``;
 
 function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -69,13 +59,15 @@ function Header() {
                   <Box
                     component="img"
                     sx={{
-                      borderRadius: '50%',
-                      width: '24px'
+                      borderRadius: "50%",
+                      width: "24px",
                     }}
                     referrerpolicy="no-referrer"
                     src={user.picture}
                   />
-                ) : (<AccountCircle />)}
+                ) : (
+                  <AccountCircle />
+                )}
               </IconButton>
               <Menu
                 id="menu-appbar"

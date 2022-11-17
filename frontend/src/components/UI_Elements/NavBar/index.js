@@ -3,25 +3,12 @@ import React, { useCallback } from "react";
 
 const Styled = {};
 
-Styled.Button = styled.button``;
+Styled.CLASSNAME = styled.div``;
 
-export const Button = styled(
+export const CLASSNAME = styled(
   React.memo(
     React.forwardRef(
-      (
-        {
-          children,
-          className,
-          style,
-          disabled,
-          busy,
-          color,
-          id,
-          onClick,
-          ...restProps
-        },
-        ref
-      ) => {
+      ({ children, className, style, id, onClick, ...restProps }, ref) => {
         const handleClick = useCallback(
           (e) => {
             onClick({ event: e, id, restProps });
@@ -30,16 +17,13 @@ export const Button = styled(
         );
         return (
           <>
-            <Styled.Button
-              ref={ref}
+            <Styled.CLASSNAME
               className={className}
               style={style}
-              color={color}
-              disabled={disabled || busy}
               onClick={handleClick}
             >
               {children}
-            </Styled.Button>
+            </Styled.CLASSNAME>
           </>
         );
       }
@@ -47,4 +31,4 @@ export const Button = styled(
   )
 )``;
 
-export default Button;
+export default CLASSNAME;
