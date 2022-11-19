@@ -3,32 +3,20 @@ import React, { useCallback } from "react";
 
 const Styled = {};
 
-Styled.CLASSNAME = styled.div``;
+Styled.NavBar = styled.div``;
 
-export const CLASSNAME = styled(
+export const NavBar = styled(
   React.memo(
-    React.forwardRef(
-      ({ children, className, style, id, onClick, ...restProps }, ref) => {
-        const handleClick = useCallback(
-          (e) => {
-            onClick({ event: e, id, restProps });
-          },
-          [onClick, id, restProps]
-        );
-        return (
-          <>
-            <Styled.CLASSNAME
-              className={className}
-              style={style}
-              onClick={handleClick}
-            >
-              {children}
-            </Styled.CLASSNAME>
-          </>
-        );
-      }
-    )
+    React.forwardRef(({ children, style, id, onClick, ...restProps }, ref) => {
+      return (
+        <>
+          <Styled.NavBar className={className} style={style}>
+            {children}
+          </Styled.NavBar>
+        </>
+      );
+    })
   )
 )``;
 
-export default CLASSNAME;
+export default NavBar;

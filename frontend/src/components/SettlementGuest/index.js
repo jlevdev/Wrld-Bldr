@@ -1,17 +1,10 @@
-import { Box, Button, Container, Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
+function SettlementGuest() {
+  let navigate = useNavigate();
 
-function SettlementPlayer() {
-    let navigate = useNavigate();
-
-
-    return (
-        <div id="SettlementPlayer">
-
-        </div>
-    );
+  return <div id="SettlementGuest"></div>;
 }
 
-export default SettlementPlayer;
+export default SettlementGuest;
