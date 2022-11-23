@@ -1,43 +1,34 @@
-import { Box, Button, Container, Typography } from "@mui/material";
-import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import styled from "styled-components";
+import { Container } from "@mui/material";
+
+const Styled = {};
+
+Styled.SubContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+Styled.Logo = styled.img`
+  margin-bottom: 3em;
+  width: 50vw;
+`;
 
 function LandingPage() {
-  const navigate = useNavigate();
-
-  function renderContent() {
-    return (
-      <Container sx={{ paddingTop: "35vh" }}>
-        <Box
-          display="flex"
-          justifyContent="center"
-          sx={{
-            "& img": {
-              mb: 3,
-              width: "70vw",
-            },
-          }}
-        >
-          {" "}
-          <img
-            src="https://i.ibb.co/ZmFFp51/Untitled.png"
-            alt=""
-            className="wb-logo"
-          />{" "}
-        </Box>
-        <Box display="flex" justifyContent="center">
-          {!false ? (<Typography>Not signed in</Typography>) :
-            (
-              <>
-                <Typography>signed in</Typography>
-              </>
-            )}
-        </Box>
-      </Container>
-    );
-  }
-
-  return <>{renderContent()}</>;
+  return (
+    <Container sx={{ paddingTop: "35vh" }}>
+      <Styled.SubContainer>
+        <Styled.Logo
+          src="https://i.ibb.co/ZmFFp51/Untitled.png"
+          alt=""
+          className="wb-logo"
+        />
+      </Styled.SubContainer>
+      <Styled.SubContainer>
+        <h3>Stuff goes here</h3>
+      </Styled.SubContainer>
+    </Container>
+  );
 }
 
 export default LandingPage;
