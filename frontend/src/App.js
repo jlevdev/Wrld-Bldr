@@ -3,9 +3,10 @@ import "./index.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import styled, { ThemeProvider } from "styled-components";
-import { Auth0Provider } from "@auth0/auth0-react";
 import Routing from "./components/Routing";
 import { theme } from "theme";
+import { AuthProvider } from "context/AuthContext";
+
 const Styled = {};
 
 Styled.WallpaperBackground = styled.div`
@@ -39,15 +40,11 @@ function App() {
   return (
     <React.StrictMode>
       <ThemeProvider theme={theme}>
-        <Auth0Provider
-          domain="dev-dtp9c6a7.us.auth0.com"
-          clientId="3WN7Z4GU9LU9CFsqjpzZla4uOZZQDQNe"
-          redirectUri={window.location.origin}
-        >
+        <AuthProvider>
           <Styled.WallpaperBackground>
             <Routing />
           </Styled.WallpaperBackground>
-        </Auth0Provider>
+        </AuthProvider>
       </ThemeProvider>
     </React.StrictMode>
   );

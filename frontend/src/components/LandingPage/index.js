@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { Container } from "@mui/material";
+import AuthContext from "context/AuthContext";
 
 const Styled = {};
 
@@ -11,10 +12,12 @@ Styled.SubContainer = styled.div`
 
 Styled.Logo = styled.img`
   margin-bottom: 3em;
-  width: 50vw;
+  width: 30vw;
 `;
 
 function LandingPage() {
+  const { user } = useContext(AuthContext);
+
   return (
     <Container sx={{ paddingTop: "35vh" }}>
       <Styled.SubContainer>
@@ -25,7 +28,7 @@ function LandingPage() {
         />
       </Styled.SubContainer>
       <Styled.SubContainer>
-        <h3>Stuff goes here</h3>
+        {user && <div>YOU ARE LOGGED IN</div>}
       </Styled.SubContainer>
     </Container>
   );

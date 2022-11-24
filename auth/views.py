@@ -1,9 +1,10 @@
-from .serializers import RegisterSerializer, UserSerializer
-from rest_framework.permissions import AllowAny
+from .serializers import RegisterSerializer, UserSerializer, MyTokenObtainPairSerializer
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 
@@ -35,3 +36,6 @@ class UserView(generics.RetrieveAPIView):
         if request.user and pk == 'me':
             return Response(UserSerializer(request.user).data)
         return super(UserView, self).retrieve(request, pk)
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer

@@ -1,11 +1,12 @@
-import React from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import { Outlet, Navigate, useLocation } from "react-router-dom";
+import React, { useContext } from "react";
+import AuthContext from "context/AuthContext";
 
-const ProtectedRoute = ({ redirectPath = "/" }) => {
-  const { isAuthenticated } = useAuth0();
+import { Outlet, Navigate } from "react-router-dom";
 
-  if (!isAuthenticated) {
+const ProtectedRoute = ({ redirectPath = "/login" }) => {
+  const { user } = useContext(AuthContext);
+
+  if (!user) {
     return <Navigate to={redirectPath} />;
   }
 

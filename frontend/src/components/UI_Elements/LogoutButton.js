@@ -1,10 +1,11 @@
-import React from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import React, { useContext } from "react";
 import Button from "./Button";
+import AuthContext from "context/AuthContext";
 
 const LogoutButton = (props) => {
   const { text } = props;
-  const { logout } = useAuth0();
+  const { logout } = useContext(AuthContext);
+
 
   return (
     <Button onClick={() => logout({ returnTo: window.location.origin })}>
