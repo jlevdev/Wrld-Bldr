@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
+import { Container } from "@mui/material";
 import Header from "components/Header";
 import Footer from "./components/Footer";
 import styled, { ThemeProvider } from "styled-components";
@@ -20,6 +21,7 @@ Styled.WallpaperBackground = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  z-index: -1;
 `;
 
 function App() {
@@ -42,9 +44,10 @@ function App() {
       <ThemeProvider theme={theme}>
         <AuthProvider>
           <Header />
-          <Styled.WallpaperBackground>
+          <Styled.WallpaperBackground />
+          <Container sx={{ paddingTop: "80px" }}>
             <Routing />
-          </Styled.WallpaperBackground>
+          </Container>
         </AuthProvider>
       </ThemeProvider>
     </React.StrictMode>

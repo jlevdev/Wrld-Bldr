@@ -1,6 +1,6 @@
-import React from "react";
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useContext } from "react";
+import AuthContext from "context/AuthContext";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Styled = {};
@@ -73,14 +73,19 @@ function MenuItem(props) {
 }
 
 function Header() {
+  const { user } = useContext(AuthContext);
 
   return (
     <Styled.Header>
       <styled.Nav>
         <styled.List>
           <MenuItem text={"Home"} route={"/"} />
-          <MenuItem text={"Create"} route={"/create"} />
-          <MenuItem text={"Account"} route={"/account"} />
+          {user &&
+            <>
+              <MenuItem text={"Create"} route={"/create"} />
+              <MenuItem text={"Account"} route={"/account"} />
+            </>
+          }
         </styled.List>
       </styled.Nav>
     </Styled.Header>
