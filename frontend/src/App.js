@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
-import Header from "./components/Header";
+import Header from "components/Header";
 import Footer from "./components/Footer";
 import styled, { ThemeProvider } from "styled-components";
 import Routing from "./components/Routing";
@@ -41,6 +41,7 @@ function App() {
     <React.StrictMode>
       <ThemeProvider theme={theme}>
         <AuthProvider>
+          <Header />
           <Styled.WallpaperBackground>
             <Routing />
           </Styled.WallpaperBackground>

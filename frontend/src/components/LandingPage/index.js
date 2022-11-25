@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { Container } from "@mui/material";
 import AuthContext from "context/AuthContext";
+import MySettlements from "./MySettlements";
+import RouteButton from "components/UI_Elements/RouteButton";
 
 const Styled = {};
 
@@ -28,7 +30,14 @@ function LandingPage() {
         />
       </Styled.SubContainer>
       <Styled.SubContainer>
-        {user && <div>YOU ARE LOGGED IN</div>}
+        {user ? (
+          <MySettlements />
+        ) : (
+          <>
+            <RouteButton text={"Login"} route={"/login"} />
+            <RouteButton text={"Sign Up"} route={"/register"} />
+          </>
+        )}
       </Styled.SubContainer>
     </Container>
   );
