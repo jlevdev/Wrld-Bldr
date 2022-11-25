@@ -6,6 +6,7 @@ const Styled = {};
 Styled.Button = styled.button`
   align-items: center;
   appearance: none;
+  background-color: ${props => props.theme.colors.monochrome.black};
   border-radius: 4px;
   border: solid 2px ${props => props.theme.colors.primary.dark};
   box-sizing: border-box;
@@ -35,8 +36,7 @@ Styled.Button = styled.button`
   will-change: transform,opacity;
 
   &:hover {
-    border-color: ${props => props.theme.colors.primary.main};
-    color: ${props => props.theme.colors.primary.main};
+    background-color: ${props => props.theme.colors.monochrome.slate};
   }
 
   &:disabled {
@@ -46,12 +46,9 @@ Styled.Button = styled.button`
     pointer-events: none;
   }
 
-  &:not(:disabled) {
-    background-color: ${props => props.theme.colors.monochrome.black};
-  }
-
   &:active {
-    background: ${props => props.theme.colors.monochrome.slate};
+    border-color: ${props => props.theme.colors.primary.main};
+    color: ${props => props.theme.colors.primary.main};
   }
 
 `;

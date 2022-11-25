@@ -10,10 +10,14 @@ const Styled = {};
 Styled.SubContainer = styled.div`
   display: flex;
   justify-content: center;
+
+  & button {
+    margin: 0 10px;
+  }
 `;
 
 Styled.Logo = styled.img`
-  margin-bottom: 3em;
+  margin-bottom: 30px;
   width: 30vw;
 `;
 
@@ -34,8 +38,8 @@ function LandingPage() {
           <MySettlements />
         ) : (
           <>
-            <RouteButton text={"Login"} route={"/login"} />
-            <RouteButton text={"Sign Up"} route={"/register"} />
+            <RouteButton className={'cta'} text={"Login"} route={"/login"} />
+            <RouteButton className={'cta'} text={"Sign Up"} route={"/register"} />
           </>
         )}
       </Styled.SubContainer>

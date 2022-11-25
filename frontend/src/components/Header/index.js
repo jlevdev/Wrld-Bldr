@@ -6,7 +6,7 @@ import styled from "styled-components";
 const Styled = {};
 
 Styled.Header = styled.header`
-  background: rgba{255,255,255, 1};
+  background: ${props => props.theme.colors.monochrome.slate};
   position: fixed;
   top: 0;
   left: 0;
@@ -15,29 +15,50 @@ Styled.Header = styled.header`
   display: flex;
   align-items: center;
   box-shadow: 0 0 25px 0 black;
-
+  justify-content: center;
   z-index: 1;
 
-  & * {
-    display: inline;
-  }
 `;
 
-Styled.Nav = styled.nav`
-  
+styled.Nav = styled.nav`
+  height: 100%;
 `;
 
-Styled.Menu = styled.ul`
-  
+styled.List = styled.ul`
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
 `;
 
 Styled.li = styled.li`
-  margin: 20px;
+  padding: 0 40px;
+  display: inline;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+  background: rgba(255,255,255,0);
+
+  &:hover {
+    background: rgba(255,255,255,.7);
+    cursor: pointer;
+  }
+
+  &:hover * {
+    color: ${props => props.theme.colors.monochrome.black};
+  }
 `;
 
 Styled.link = styled(Link)`
-  color: black;
   text-decoration: none;
+  font-family: ${props => props.theme.fontFamily.primary};
+  font-size: ${props => props.theme.fontSizes.p1};
+  color: ${props => props.theme.colors.primary.main};
+  font-weight: 600;
+  transition: 0.3s;
 `;
 
 function MenuItem(props) {
@@ -52,27 +73,16 @@ function MenuItem(props) {
 }
 
 function Header() {
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  let navigate = useNavigate();
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   return (
     <Styled.Header>
-      <nav>
-        <ul>
+      <styled.Nav>
+        <styled.List>
           <MenuItem text={"Home"} route={"/"} />
-          <MenuItem text={"Create"} route={"/"} />
+          <MenuItem text={"Create"} route={"/create"} />
           <MenuItem text={"Account"} route={"/account"} />
-        </ul>
-      </nav>
+        </styled.List>
+      </styled.Nav>
     </Styled.Header>
   );
 }

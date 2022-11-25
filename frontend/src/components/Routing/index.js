@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Account from "components/Account";
 import SettlementGuest from "components/SettlementGuest";
+import SettlementCreate from "components/SettlementCreate";
 import Settlement from "components/Settlement";
 import LandingPage from "components/LandingPage";
 import LoginPage from "components/LoginPage";
@@ -18,6 +19,7 @@ function Routing() {
       <Route element={<ProtectedRoute />}>
         <Route exact path="/account" element={<Account />} />
         <Route exact path="/settlement/:id" element={<Settlement />} />
+        <Route exact path="/create" element={<SettlementCreate />} />
       </Route>
 
     </Routes>
