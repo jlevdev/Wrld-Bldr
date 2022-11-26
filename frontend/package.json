@@ -15,7 +15,7 @@
     "styled-components": "^5.3.6"
   },
   "scripts": {
-    "start": "concurrently \"set PORT=80 && react-scripts start\" \"python ../manage.py runserver 0.0.0.0:8000\"",
+    "watch": "concurrently \"set PORT=80 && react-scripts start\" \"python ../manage.py runserver 0.0.0.0:8000\"",
     "backend": "python ../manage.py runserver 0.0.0.0:8000",
     "frontend": "set PORT=80 && react-scripts start",
     "build": "react-scripts build",
