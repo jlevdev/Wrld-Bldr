@@ -13,7 +13,7 @@ export const theme = {
       darker: "#097474",
     },
     secondary: {
-      main: "#979684"
+      main: "#979684",
     },
     monochrome: {
       white: "#fff",
@@ -28,7 +28,7 @@ export const theme = {
     h3: "20px",
     p1: "16px",
     p2: "14px",
-    small: "12px"
+    small: "12px",
   },
   fontFamily: {
     primary: "Roboto, Arial, sans-serif",

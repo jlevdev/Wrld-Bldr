@@ -6,7 +6,6 @@ const LogoutButton = (props) => {
   const { text } = props;
   const { logout } = useContext(AuthContext);
 
-
   return (
     <Button onClick={() => logout({ returnTo: window.location.origin })}>
       {text ?? "Logout"}

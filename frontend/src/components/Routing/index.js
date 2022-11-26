@@ -21,7 +21,6 @@ function Routing() {
         <Route exact path="/settlement/:id" element={<Settlement />} />
         <Route exact path="/create" element={<SettlementCreate />} />
       </Route>
-
     </Routes>
   );
 }

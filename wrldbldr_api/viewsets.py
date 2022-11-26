@@ -80,11 +80,11 @@ class SettlementViewSet(viewsets.ModelViewSet):
                 {"message": "settlement creation requires name and map data"},
                 status=status.HTTP_400_BAD_REQUEST)
 
-        settlement_owner = 1
+        settlement_owner = request.user.id or 1
         settlement_name = request.data['name']
         settlement_map_data = request.data['mapData']
 
-        if request.data['clone'] != 'false':
+        if request.data['clone']:
             #duplicate settlement
             return Response({"message": "clone feature not implemented"},
                             status=status.HTTP_400_BAD_REQUEST)

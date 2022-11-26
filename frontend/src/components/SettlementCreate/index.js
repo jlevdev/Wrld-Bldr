@@ -6,29 +6,30 @@ import { useNavigate } from "react-router-dom";
 import useAxios from "hooks/UseAxios";
 
 function SettlementCreate() {
-    let navigate = useNavigate();
-    const axios = useAxios();
+  let navigate = useNavigate();
+  const axios = useAxios();
 
-    const handleClick = useCallback(() => {
-        axios.post('/settlment/', {
-            firstName: 'Fred',
-            lastName: 'Flintstone'
-        })
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    })
+  const handleClick = useCallback(() => {
+    axios
+      .post("/settlment/", {
+        firstName: "Fred",
+        lastName: "Flintstone",
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  });
 
-    return (
-        <div id="SettlementCreate">
-            <Panel>
-                <Button onClick={ }>Create</Button>
-            </Panel>
-        </div>
-    );
+  return (
+    <div id="SettlementCreate">
+      <Panel>
+        <Button onClick={handleClick}>Create</Button>
+      </Panel>
+    </div>
+  );
 }
 
 export default SettlementCreate;

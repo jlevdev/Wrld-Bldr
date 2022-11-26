@@ -15,28 +15,22 @@ Styled.SettlementTitle = styled.div``;
 
 Styled.SettlementOptions = styled.div``;
 
-
 function MySettlements() {
-    const mySettlements = [];
+  const mySettlements = [];
 
-    return (
-        <Styled.MySettlementsContainer>
-            <Styled.Grid>
-                {mySettlements.map(s => (
-                    <Styled.GridItem>
-                        <Styled.SettlementImage />
-                        <Styled.SettlementTitle>
-
-                        </Styled.SettlementTitle>
-                        <Styled.SettlementOptions />
-                    </Styled.GridItem>
-                ))}
-
-            </Styled.Grid>
-        </ Styled.MySettlementsContainer>
-
-    );
-
+  return (
+    <Styled.MySettlementsContainer>
+      <Styled.Grid>
+        {mySettlements.map((s) => (
+          <Styled.GridItem>
+            <Styled.SettlementImage />
+            <Styled.SettlementTitle></Styled.SettlementTitle>
+            <Styled.SettlementOptions />
+          </Styled.GridItem>
+        ))}
+      </Styled.Grid>
+    </Styled.MySettlementsContainer>
+  );
 }
 
 export default MySettlements;

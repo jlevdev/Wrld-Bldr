@@ -26,8 +26,7 @@ Styled.Panel = styled(Panel)`
   text-align: center;
 `;
 
-Styled.LeftPane = styled.div`
-`;
+Styled.LeftPane = styled.div``;
 
 Styled.RightPane = styled.div`
   display: flex;
@@ -49,7 +48,7 @@ Styled.VR = styled.div`
 
 const LoginPage = () => {
   const { loginUser } = useContext(AuthContext);
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const username = e.target.username.value;
     const password = e.target.password.value;
@@ -61,21 +60,21 @@ const LoginPage = () => {
       <Styled.Panel>
         <Styled.LeftPane>
           <Styled.Form onSubmit={handleSubmit}>
-            <Heading size={1} style={{ marginBottom: '10px' }}>Login</Heading>
+            <Heading size={1} style={{ marginBottom: "10px" }}>
+              Login
+            </Heading>
             <UsernameField />
             <PasswordField showForgotPassword={true} />
-            <SubmitButton>
-              Submit
-            </SubmitButton>
+            <SubmitButton>Submit</SubmitButton>
           </Styled.Form>
-        </ Styled.LeftPane>
+        </Styled.LeftPane>
         <Styled.VR />
         <Styled.RightPane>
           <Heading size={3}>Don't have an account yet?</Heading>
           <RouteButton text={"Sign Up"} route={"/register"} />
         </Styled.RightPane>
       </Styled.Panel>
-    </Styled.Container >
+    </Styled.Container>
   );
 };
 

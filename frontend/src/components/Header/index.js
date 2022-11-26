@@ -6,7 +6,7 @@ import styled from "styled-components";
 const Styled = {};
 
 Styled.Header = styled.header`
-  background: ${props => props.theme.colors.monochrome.slate};
+  background: ${(props) => props.theme.colors.monochrome.slate};
   position: fixed;
   top: 0;
   left: 0;
@@ -17,7 +17,6 @@ Styled.Header = styled.header`
   box-shadow: 0 0 25px 0 black;
   justify-content: center;
   z-index: 1;
-
 `;
 
 styled.Nav = styled.nav`
@@ -40,23 +39,23 @@ Styled.li = styled.li`
   align-items: center;
   justify-content: center;
   transition: 0.3s;
-  background: rgba(255,255,255,0);
+  background: rgba(255, 255, 255, 0);
 
   &:hover {
-    background: rgba(255,255,255,.7);
+    background: rgba(255, 255, 255, 0.7);
     cursor: pointer;
   }
 
   &:hover * {
-    color: ${props => props.theme.colors.monochrome.black};
+    color: ${(props) => props.theme.colors.monochrome.black};
   }
 `;
 
 Styled.link = styled(Link)`
   text-decoration: none;
-  font-family: ${props => props.theme.fontFamily.primary};
-  font-size: ${props => props.theme.fontSizes.p1};
-  color: ${props => props.theme.colors.primary.main};
+  font-family: ${(props) => props.theme.fontFamily.primary};
+  font-size: ${(props) => props.theme.fontSizes.p1};
+  color: ${(props) => props.theme.colors.primary.main};
   font-weight: 600;
   transition: 0.3s;
 `;
@@ -65,9 +64,7 @@ function MenuItem(props) {
   const { text, route } = props;
   return (
     <Styled.li>
-      <Styled.link to={route}>
-        {text}
-      </Styled.link>
+      <Styled.link to={route}>{text}</Styled.link>
     </Styled.li>
   );
 }
@@ -80,12 +77,12 @@ function Header() {
       <styled.Nav>
         <styled.List>
           <MenuItem text={"Home"} route={"/"} />
-          {user &&
+          {user && (
             <>
               <MenuItem text={"Create"} route={"/create"} />
               <MenuItem text={"Account"} route={"/account"} />
             </>
-          }
+          )}
         </styled.List>
       </styled.Nav>
     </Styled.Header>

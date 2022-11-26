@@ -47,8 +47,12 @@ function LandingPage() {
           <MySettlements />
         ) : (
           <>
-            <RouteButton className={'cta'} text={"Login"} route={"/login"} />
-            <RouteButton className={'cta'} text={"Sign Up"} route={"/register"} />
+            <RouteButton className={"cta"} text={"Login"} route={"/login"} />
+            <RouteButton
+              className={"cta"}
+              text={"Sign Up"}
+              route={"/register"}
+            />
           </>
         )}
       </Styled.Container>
