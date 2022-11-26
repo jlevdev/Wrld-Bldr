@@ -16,13 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.authtoken import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('wrldbldr.urls', namespace='wrldbldr')),
-    path('api/', include('wrldbldr_api.urls', namespace='wrldbldr_api')),
-    #path('api-auth/', include('rest_framework.urls', namespace='restframework_api')),
-    path('api/auth/', include('auth.urls', namespace='auth')),
-
-]
+    path('', include('wrldbldr.urls')),
+    path('api/', include('wrldbldr_api.urls')),
+    path('api/auth/', include('auth.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 4

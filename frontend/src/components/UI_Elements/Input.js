@@ -13,9 +13,9 @@ Styled.Input = styled.input`
 `;
 
 export const Input = (props) => {
-    const { ...restProps } = props;
+    const { type, ...restProps } = props;
     return (
-        <Styled.Input {...restProps} type={"text"} />
+        <Styled.Input {...restProps} type={type} />
     );
 };
 

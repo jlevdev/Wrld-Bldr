@@ -46,6 +46,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const registerUser = async (username, password, password2) => {
+        console.log(username, password, password2)
         const response = await fetch(baseURL + "/register/", {
             method: "POST",
             headers: {

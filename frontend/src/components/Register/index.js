@@ -6,7 +6,6 @@ import UsernameField from "components/UI_Elements/UsernameField";
 import PasswordField from "components/UI_Elements/PasswordField";
 import SubmitButton from "components/UI_Elements/SubmitButton";
 import Heading from "components/UI_Elements/Heading";
-import RouteButton from "components/UI_Elements/RouteButton";
 
 const Styled = {};
 
@@ -41,10 +40,6 @@ function Register() {
         e.preventDefault();
         registerUser(username, password, password2);
     };
-
-    useEffect(() => {
-
-    });
 
     return (
         <Styled.Container>
