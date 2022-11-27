@@ -12,8 +12,8 @@ class Command(BaseCommand):
     help = 'Creates an initial settlement and user.'
 
     def handle(self, *args, **options):
-        #generate avatars
-        #server must be running for this
+        # generate avatars
+        # server must be running for this
         for f in glob(
                 path.join(settings.BASE_DIR, 'initial_files\\avatars') +
                 '\\*.png'):
@@ -50,7 +50,7 @@ class Command(BaseCommand):
 
             response = requests.request("POST",
                                         verify=False,
-                                        url='http://localhost:8000/api/avatar/',
+                                        url='http://localhost/api/avatar/',
                                         data=payload,
                                         files=files,
                                         headers=headers)
@@ -58,7 +58,7 @@ class Command(BaseCommand):
             print(response.text)
         self.stdout.write(self.style.SUCCESS('Successfully generated Avatars'))
 
-        #generate wallpapers
+        # generate wallpapers
         for f in glob(
                 path.join(settings.BASE_DIR, 'initial_files\\backgrounds') +
                 '\\*.jpg'):
@@ -71,7 +71,7 @@ class Command(BaseCommand):
 
             response = requests.request("POST",
                                         verify=False,
-                                        url='http://localhost:8000/api/background/',
+                                        url='http://localhost/api/background/',
                                         data=payload,
                                         files=files,
                                         headers=headers)
@@ -79,7 +79,7 @@ class Command(BaseCommand):
         self.stdout.write(
             self.style.SUCCESS('Successfully generated Backgrounds'))
 
-        #generate icons
+        # generate icons
         for f in glob(
                 path.join(settings.BASE_DIR, 'initial_files\\icons') +
                 '\\*.png'):
@@ -92,7 +92,7 @@ class Command(BaseCommand):
 
             response = requests.request("POST",
                                         verify=False,
-                                        url='http://localhost:8000/api/icon/',
+                                        url='http://localhost/api/icon/',
                                         data=payload,
                                         files=files,
                                         headers=headers)
