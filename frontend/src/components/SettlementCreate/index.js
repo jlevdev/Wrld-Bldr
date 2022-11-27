@@ -12,8 +12,8 @@ function SettlementCreate() {
   const handleClick = useCallback(() => {
     axios
       .post("/settlment/", {
-        firstName: "Fred",
-        lastName: "Flintstone",
+        name: "test_settlement_" + Date.now(),
+        mapData: {},
       })
       .then(function (response) {
         console.log(response);

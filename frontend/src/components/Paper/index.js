@@ -26,30 +26,12 @@ function Paper() {
   }, [])
 
   return (
-
-    );
-}
-
-export default SettlementCreate;
-
-
-export class Paper extends Component {
-
-
-  componentDidMount() {
-  }
-
-  render() {
-    return (
-      <canvas
-        id="paper-canvas"
-        resize="true"
-        style={{ width: Paper.screen.w + "px", height: Paper.screen.h + "px" }}
-      />
-    );
-  }
-
-  updateDraw() { }
+    <canvas
+      id="paper-canvas"
+      resize="true"
+      style={{ width: Paper.screen.w + "px", height: Paper.screen.h + "px" }}
+    />
+  );
 }
 
 export default Paper;
