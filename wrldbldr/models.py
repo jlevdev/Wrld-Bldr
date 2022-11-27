@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import random
 import json
-from .constants import BackendConstants
+from .constants import Constants
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 
@@ -116,8 +116,8 @@ class Location_Manager(models.Manager):
             new_item.location_id = shop.id
             new_item.save()
 
-        shop.fiscal_status = random.choice(BackendConstants.SHOP_FISCAL_STATUS)
-        starting_coin_ranges = BackendConstants.SHOP_STARTING_COINS[
+        shop.fiscal_status = random.choice(Constants.SHOP_FISCAL_STATUS)
+        starting_coin_ranges = Constants.SHOP_STARTING_COINS[
             shop.fiscal_status]
         shop.gold = random.randint(starting_coin_ranges[0][0],
                                    starting_coin_ranges[0][1])
@@ -185,14 +185,14 @@ class NPC_Manager(models.Manager):
         amount = random.randint(amount, randomAmount)
         traits = []
         while amount > 0:
-            newtrait = random.choice(BackendConstants.TRAITS).capitalize()
+            newtrait = random.choice(Constants.TRAITS).capitalize()
             if newtrait not in traits:
                 traits.append(newtrait)
                 amount = amount - 1
         return traits
 
     def generate_race(self):
-        return random.choice(BackendConstants.RACES)
+        return random.choice(Constants.RACES)
 
     def generate_name(self):
         return 'John Cena'

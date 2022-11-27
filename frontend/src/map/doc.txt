@@ -1,0 +1,10 @@
+1. Generate random array of points on a grid
+2. Create a "frame" of addition points (2 triangles) that represent the farthest reach of the grid.
+3. Create "regions" based on the grid by itterating over grid points (exlcuding the frame).
+    3a. Creates triangles based on grid.
+    3b. Creates regions based on a central point (found by itterating over all points)
+    3c. All triangles that share the region central point are considered part of the region.
+    3d. This means all regions share triangles.
+4. From these regions, create "patches"
+    4a. Patches are created from the center points of all triangles for a region.
+5. optimizaJunctions ???

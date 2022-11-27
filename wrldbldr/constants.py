@@ -1,4 +1,4 @@
-class BackendConstants:
+class Constants:
 
     RACE_HUMAN = 'human'
     RACE_ELF = 'elf'
