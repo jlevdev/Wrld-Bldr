@@ -228,4 +228,5 @@ Pipfile.lock
 package-lock.json
 
 media/
-.vscode/
+.vscode
+.vscode/*
