@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components";
-import React, { useCallback } from "react";
+import styled from "styled-components";
+import React from "react";
 
 const Styled = {};
 

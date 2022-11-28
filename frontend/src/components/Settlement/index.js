@@ -1,14 +1,19 @@
-import { Box, Button, Container, Typography } from "@mui/material";
-import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import React from "react";
+import usePaper from "hooks/usePaper";
+
+const Styled = {};
+
+Styled.Container = `
+  display: flex;
+`;
 
 function Settlement() {
-  let navigate = useNavigate();
+  const { activeSettlement } = usePaper();
+
   return (
     <div id="Settlement">
-      <Box sx={{ background: "#FF0000" }}>
-        <Typography variant="h1">lol</Typography>
-      </Box>
+
     </div>
   );
 }

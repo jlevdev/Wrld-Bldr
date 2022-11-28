@@ -1,31 +1,24 @@
 import Panel from "components/Panel";
 import Button from "components/UI_Elements/Button";
-import React, { useContext } from "react";
+import React from "react";
 import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import useAxios from "hooks/UseAxios";
+import usePaper from "hooks/usePaper";
+import Input from "components/UI_Elements/Input";
 
 function SettlementCreate() {
-  let navigate = useNavigate();
-  const axios = useAxios();
+  const titleRef = useRef(null);
+  const seedRef = useRef(null);
 
   const handleClick = useCallback(() => {
-    axios
-      .post("/settlment/", {
-        name: "test_settlement_" + Date.now(),
-        mapData: {},
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  });
+    const { createAndDrawNewSettlement } = usePaper();
+    createAndDrawNewSettlement({ 'name': titleRef.current.value, 'seed': seedRef.current.value });
+  }, [titleRef, seedRef]);
 
   return (
     <div id="SettlementCreate">
       <Panel>
+        <Input type={"text"} ref={titleRef} />
+        <Input type={"number"} ref={seedRef} />
         <Button onClick={handleClick}>Create</Button>
       </Panel>
     </div>
