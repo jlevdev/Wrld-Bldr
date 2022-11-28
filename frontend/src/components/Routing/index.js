@@ -18,7 +18,7 @@ function Routing() {
       <Route exact path="/register" element={<Register />} />
       <Route element={<ProtectedRoute />}>
         <Route exact path="/account" element={<Account />} />
-        <Route exact path="/settlement/:id" element={<Settlement />} />
+        <Route exact path="/settlement" element={<Settlement />} />
         <Route exact path="/create" element={<SettlementCreate />} />
       </Route>
     </Routes>

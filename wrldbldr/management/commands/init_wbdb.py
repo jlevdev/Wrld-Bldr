@@ -109,8 +109,8 @@ class Command(BaseCommand):
 
         Settlement.objects.create_with_random_shops(name="Thunder Bluff",
                                                     map_data={
-                                                        'seed':
-                                                        1,
+                                                        'seed': 1,
+                                                        'size': 40,
                                                         'shopIndexes':
                                                         [1, 2, 3, 4, 5]
                                                     },

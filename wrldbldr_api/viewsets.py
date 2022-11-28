@@ -75,12 +75,11 @@ class SettlementViewSet(viewsets.ModelViewSet):
             map_data=settlement_map_data,
             owner_id=settlement_owner)
 
-        r = Response(data=self.get_serializer(new_settlement).data)
+        mega_object = self.get_mega_object(new_settlement.id)
 
-        return r
+        return Response(data=mega_object)
 
-    @action(methods=["get"], detail=True, url_path="mega", url_name="mega")
-    def get_mega_object(self, request, pk=None):
+    def generate_mega_object(self, pk):
         sq = Settlement.objects.all().get(pk=pk)
         mega_object = SettlementSerializer(sq).data
 
@@ -103,4 +102,9 @@ class SettlementViewSet(viewsets.ModelViewSet):
 
             mega_object["locations"].append(temp)
 
+        return mega_object
+
+    @action(methods=["get"], detail=True, url_path="mega", url_name="mega")
+    def get_mega_object(self, request, pk=None):
+        mega_object = self.generate_mega_object(pk)
         return Response(mega_object)

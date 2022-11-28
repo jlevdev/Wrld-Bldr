@@ -1,68 +1,110 @@
 import { createContext, useState, useEffect } from "react";
-import jwt_decode from "jwt-decode";
 import Model from "map/building/Model";
 import MapDrawer from "map/mapping/MapDrawer";
+import useAxios from "hooks/UseAxios";
+import { useNavigate } from "react-router-dom";
 
 const PaperContext = createContext();
 
 export default PaperContext;
 
 export const PaperProvider = ({ children }) => {
-    const [screen, setScreen] = useState({ w: 1400, h: 1200 });
+    const MAP_DATA_DEFAULT = { seed: 1, size: 40, shopIndexes: [] };
+    const SCREEN_DEFAULT = { w: 1400, h: 1200 };
+
+    const [screen, setScreen] = useState(SCREEN_DEFAULT);
     const [mapLoading, setMapLoading] = useState(true);
-    const [options, setoptions] = useState({ seed: 1, size: "Metropolis" });
     const [activeSettlement, setActiveSettlement] = useState(null);
     const [activeShop, setActiveShop] = useState(null);
+    const [activeNPC, setActiveNPC] = useState(null);
 
-    const clear = useCallback(() => {
+    const freshPaper = () => {
         Model.instance = null;
-    }, []);
+        setScreen(SCREEN_DEFAULT)
+        setMapLoading(true);
+        setActiveSettlement(null);
+        setActiveShop(null);
+        setActiveNPC(null);
+    }
 
-    const generateNewSettlement = useCallback((options) => {
-        const { seed = String(Date.now()).substring(-5), size } = options;
+    const generateShopIndexes = (mapData) => {
+        freshPaper();
+        const { seed, size } = mapData;
+        new Model(size, seed);
+        return MapDrawer.generateShopIndexes();
+    }
+
+    const createAndDrawNewSettlement = async (options) => {
+        freshPaper();
+
+        const finalMapData = { ...MAP_DATA_DEFAULT, ...options.mapData };
+        finalMapData.shopIndexes = generateShopIndexes(finalMapData.seed);
+
+        const axios = useAxios();
+        await axios
+            .post("/settlement/", {
+                mapData: finalMapData,
+                name: options.name || "TEST_CITY_" + (Math.floor(Math.random() * 999999) + 1),
+            })
+            .then((res) => {
+                const temp = res.data;
+                temp.map_data = JSON.parse(temp.map_data);
+                setActiveSettlement(temp);
+                prepareMapAndNavigate();
+            })
+            .catch((err) => console.log(err));
+        //TODO: for some reason you need to wait some amount of time or it will not re-render
+    }
+
+    const drawExistingSettlement = async (settlementId) => {
+        freshPaper();
+
+        const axios = useAxios();
+
+        await axios
+            .get("/settlement/" + settlementId + "/mega/")
+            .then((res) => {
+                const temp = res.data;
+                temp.map_data = JSON.parse(temp.map_data);
+                setActiveSettlement(temp);
+                prepareMapAndNavigate();
+            })
+            .catch((err) => console.log(err));
+    }
+
+    const prepareMapAndNavigate = async () => {
+        const navigate = useNavigate();
+
         Model.instance = null;
         console.log(
             "Seed at map gen",
-            seed
+            activeSettlement.seed
         );
         new Model(
-            MapDrawer.SETTLEMENT_SIZE_MAP[
-            Paper.i.props.activeSettlement.map_data.size
-            ],
-            Paper.i.props.activeSettlement.map_data.seed
+            activeSettlement.mapData.size,
+            activeSettlement.mapData.seed
         );
         new MapDrawer();
-    }, []);
-
-    const SetActiveShop = useCallback((shop) => {
-        Paper.i.props.setActiveShop(shop);
-    }, []);
-
-    const wipe = useCallback(() => {
-        //Paper.i.props.createNewSettlement();
-    }, []);
-
+        setMapLoading(false);
+        navigate('/settlement');
+    }
 
     const contextData = {
-        user,
-        setUser,
-        authTokens,
-        setAuthTokens,
-        registerUser,
-        loginUser,
-        logoutUser,
+        screen,
+        setScreen,
+        mapLoading,
+        activeSettlement,
+        activeShop,
+        activeNPC,
+        setActiveShop,
+        setActiveNPC,
+        createAndDrawNewSettlement,
+        drawExistingSettlement
     };
-
-    useEffect(() => {
-        if (authTokens) {
-            setUser(jwt_decode(authTokens.access));
-        }
-        setLoading(false);
-    }, [authTokens, loading]);
 
     return (
         <PaperContext.Provider value={contextData}>
-            {loading ? null : children}
+            {children}
         </PaperContext.Provider>
     );
 };

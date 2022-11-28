@@ -1,6 +1,6 @@
 import * as paper from "paper/dist/paper-full";
 import React, { useLayoutEffect } from "react";
-
+import usePaper from "hooks/usePaper";
 
 /**
  * This is the component file that gives the canvas element to React
@@ -9,13 +9,7 @@ import React, { useLayoutEffect } from "react";
  */
 
 function Paper() {
-  let i = null; const [state, setstate] = useState(initialState)
-
-  const screen = { w: 1400, h: 1200 };
-
-  //set to DEBUG value
-  const options = { size: "Metropolis" };
-  const default_options = { size: "Metropolis" };
+  const { screen } = usePaper();
 
   useLayoutEffect(() => {
     //TODO: not how I should handle this for production, fix after actual settlement creation using backend CRUD is done
@@ -29,7 +23,7 @@ function Paper() {
     <canvas
       id="paper-canvas"
       resize="true"
-      style={{ width: Paper.screen.w + "px", height: Paper.screen.h + "px" }}
+      style={{ width: screen.w + "px", height: screen.h + "px" }}
     />
   );
 }
