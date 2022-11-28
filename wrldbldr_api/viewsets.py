@@ -5,8 +5,7 @@ from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from .serializers import BackgroundSerializer, IconSerializer, SettlementSerializer, ItemSerializer, LocationSerializer, NPCSerializer, AvatarSerializer
 from rest_framework.decorators import action
-from django.shortcuts import get_object_or_404
-from django.shortcuts import get_list_or_404
+from copy import copy
 
 
 class AvatarViewSet(viewsets.ModelViewSet):
@@ -38,22 +37,6 @@ class LocationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     serializer_class = LocationSerializer
 
-    @action(methods=["get"], detail=True, url_path="npcs", url_name="npcs")
-    def get_npcs(self, request, pk=None):
-        q = NPC.objects.filter(location_id=pk)
-        if q:
-            return Response(data=NPCSerializer(q, many=True).data)
-        return Response({"message": "No npcs found for that location"},
-                        status=status.HTTP_404_NOT_FOUND)
-
-    @action(methods=["get"], detail=True, url_path="items", url_name="items")
-    def get_items(self, request, pk=None):
-        q = Item.objects.filter(location_id=pk)
-        if q:
-            return Response(data=ItemSerializer(q, many=True).data)
-        return Response({"message": "No items found for that location"},
-                        status=status.HTTP_404_NOT_FOUND)
-
 
 class NPCViewSet(viewsets.ModelViewSet):
     queryset = NPC.objects.all()
@@ -77,16 +60,16 @@ class SettlementViewSet(viewsets.ModelViewSet):
         settlement_map_data = request.data["mapData"]
 
         if request.data["clone"]:
-            #duplicate settlement
+            # duplicate settlement
             return Response({"message": "clone feature not implemented"},
                             status=status.HTTP_400_BAD_REQUEST)
         if Settlement.objects.filter(name=request.data["name"]):
-            #some response for unique names
+            # some response for unique names
             return Response(
                 {"message": "a settlement with this name already exists"},
                 status=status.HTTP_400_BAD_REQUEST)
 
-        ### create via model methods
+        # create via model methods
         new_settlement = Settlement.objects.create_with_random_shops(
             name=settlement_name,
             map_data=settlement_map_data,
@@ -96,30 +79,28 @@ class SettlementViewSet(viewsets.ModelViewSet):
 
         return r
 
-    def retrieve(self, request, pk=None):
-        settlement_queryset = Settlement.objects.all()
-        settlement = get_object_or_404(settlement_queryset, pk=pk)
+    @action(methods=["get"], detail=True, url_path="mega", url_name="mega")
+    def get_mega_object(self, request, pk=None):
+        sq = Settlement.objects.all().get(pk=pk)
+        mega_object = SettlementSerializer(sq).data
 
-        settlement_data = SettlementSerializer(settlement).data
+        lq = Location.objects.filter(settlement_id=pk)
 
-        #if just getting the barebones settlment object
-        if "mega" not in request.data:
-            return Response(settlement_data)
+        mega_object["locations"] = []
 
-        mega_object = settlement_data
+        locations = LocationSerializer(lq, many=True).data
 
-        location_queryset = Location.objects.all().filter(settlement__id=settlement.id)
-        locations = get_list_or_404(location_queryset)
+        for loc in locations:
+            temp = copy(loc)
 
-        mega_object["locations"] = LocationSerializer(locations).data
+            npcs = NPC.objects.filter(location_id=loc["id"])
+            temp["npcs"] = NPCSerializer(
+                npcs, many=True).data
 
-        for loc in mega_object["locations"]:
-            npc_queryset = NPC.objects.all().filter(location__id=loc["id"])
-            npcs = get_list_or_404(npc_queryset)
-            mega_object["locations"]["id"]["npcs"] = NPCSerializer(npcs).data
+            items = Item.objects.all().filter(location_id=loc["id"])
+            temp["items"] = ItemSerializer(
+                items, many=True).data
 
-            item_queryset = Item.objects.all().filter(location__id=loc["id"])
-            items = get_list_or_404(item_queryset)
-            mega_object["locations"]["id"]["items"] = ItemSerializer(items).data
+            mega_object["locations"].append(temp)
 
         return Response(mega_object)
