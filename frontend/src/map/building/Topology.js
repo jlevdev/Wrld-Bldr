@@ -2,7 +2,7 @@ import Point from "../geom/Point";
 import Graph from "../geom/Graph";
 
 import ArrayUtils from "../utils/ArrayUtils";
-import Visual from "../utils/Visual";
+
 
 export default class Topology {
   model; //: Model;

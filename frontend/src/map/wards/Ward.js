@@ -3,7 +3,7 @@ import GeomUtils from "../geom/GeomUtils";
 import Random from "../utils/Random";
 import Cutter from "../building/Cutter";
 import ArrayUtils from "../utils/ArrayUtils";
-import Visual from "../utils/Visual";
+
 import Polygon from "../geom/Polygon";
 
 export default class Ward {
@@ -297,8 +297,8 @@ export default class Ward {
           onStreet
             ? Ward.MAIN_STREET * 5
             : innerPatch
-            ? Ward.REGULAR_STREET
-            : Ward.ALLEY
+              ? Ward.REGULAR_STREET
+              : Ward.ALLEY
         );
       }
     });

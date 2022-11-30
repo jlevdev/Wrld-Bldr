@@ -8,10 +8,9 @@ import {
 } from "paper/dist/paper-full";
 
 import Point from "../geom/Point";
-import Visual from "../utils/Visual";
 import Shop from "../data/Shop";
 import District from "../building/District";
-import Paper from "../../components/SettlementBuilder/Paper";
+import Model from "map/building/Model";
 
 /**
  * This is a layer on top of the Paper JS rendering library.
@@ -241,7 +240,7 @@ export default class Graphics {
   }
 
   renderBuffer(holdRenderAfter = false, emptyBuffer = true) {
-    const locations = Paper.i.props.locationCache;
+    const locations = Model.instance.locationCache;
     this.holdRender = false;
 
     let drawIndex = 0;

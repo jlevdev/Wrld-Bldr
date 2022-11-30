@@ -4,8 +4,7 @@ import Ward from "../wards/Ward";
 import Palette from "./Palette";
 import Brush from "./Brush";
 import Random from "../utils/Random";
-import Visual from "../utils/Visual";
-import Paper from "../../components/SettlementBuilder/Paper";
+
 
 /*
 This file brings together pieces from the Model and ties it together with files needed to draw the map and does so when instantiated.
@@ -25,12 +24,12 @@ export default class MapDrawer {
 
     brush; //: Brush;
 
-    constructor() {
+    constructor(screen) {
         this.brush = new Brush(MapDrawer.palette);
 
         const initial_graphics_obj = new Graphics();
         initial_graphics_obj.beginFill(MapDrawer.palette.paper);
-        initial_graphics_obj.drawCircle(0, 0, Paper.screen.w * 2);
+        initial_graphics_obj.drawCircle(0, 0, screen.w * 2);
 
         this.model = Model.instance;
 

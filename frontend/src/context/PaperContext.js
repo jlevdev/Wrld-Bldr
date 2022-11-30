@@ -3,7 +3,7 @@ import Model from "map/building/Model";
 import MapDrawer from "map/mapping/MapDrawer";
 import useAxios from "hooks/UseAxios";
 import { useNavigate } from "react-router-dom";
-import Shop from "Map/data/Shop";
+import Shop from "map/data/Shop";
 
 const PaperContext = createContext();
 
@@ -20,6 +20,9 @@ export const PaperProvider = ({ children }) => {
     const [activeNPC, setActiveNPC] = useState(null);
     const [allShops, setAllShops] = useState([]);
 
+    const axios = useAxios();
+    const navigate = useNavigate();
+
     const freshPaper = () => {
         Model.instance = null;
         setScreen(SCREEN_DEFAULT)
@@ -33,7 +36,11 @@ export const PaperProvider = ({ children }) => {
     const generateShopIndexes = (mapData) => {
         freshPaper();
         const { seed, size } = mapData;
-        new Model(size, seed);
+        new Model({
+            size,
+            seed,
+            screen
+        });
         return MapDrawer.generateShopIndexes();
     }
 
@@ -41,19 +48,18 @@ export const PaperProvider = ({ children }) => {
         freshPaper();
 
         const finalMapData = { ...MAP_DATA_DEFAULT, ...options.mapData };
-        finalMapData.shopIndexes = generateShopIndexes(finalMapData.seed);
+        finalMapData.shopIndexes = [1, 2, 3, 4, 5, 6, 7]; //! Resolve generateShopIndexes(finalMapData.seed);
 
-        const axios = useAxios();
         await axios
             .post("/settlement/", {
                 mapData: finalMapData,
-                name: options.name || "TEST_CITY_" + (Math.floor(Math.random() * 999999) + 1),
+                name: options.name,
             })
             .then((res) => {
                 const temp = res.data;
                 temp.map_data = JSON.parse(temp.map_data);
                 setActiveSettlement(temp);
-                prepareMapAndNavigate();
+                prepareMapAndNavigate(temp);
             })
             .catch((err) => console.log(err));
         //TODO: for some reason you need to wait some amount of time or it will not re-render
@@ -62,32 +68,48 @@ export const PaperProvider = ({ children }) => {
     const drawExistingSettlement = async (settlementId) => {
         freshPaper();
 
-        const axios = useAxios();
-
         await axios
             .get("/settlement/" + settlementId + "/mega/")
             .then((res) => {
                 const temp = res.data;
                 temp.map_data = JSON.parse(temp.map_data);
                 setActiveSettlement(temp);
-                prepareMapAndNavigate();
+                prepareMapAndNavigate(temp);
             })
             .catch((err) => console.log(err));
     }
 
-    const prepareMapAndNavigate = async () => {
-        const navigate = useNavigate();
+    const getCaches = (settlement) => {
+        const cache = {};
 
+        cache.location = [...settlement.locations];
+
+        cache.icon = Object.assign({}, settlement.icons);
+
+        cache.npc = [];
+        settlement.locations.forEach((loc) => {
+            cache.npc.push(Object.assign({}, loc.npcs));
+        });
+
+        return cache;
+    }
+
+    const prepareMapAndNavigate = async (settlement) => {
+        console.log(settlement)
         Model.instance = null;
         console.log(
             "Seed at map gen",
-            activeSettlement.seed
+            settlement.map_data.seed
         );
         new Model(
-            activeSettlement.mapData.size,
-            activeSettlement.mapData.seed
+            {
+                size: settlement.map_data.size,
+                seed: settlement.map_data.seed,
+                caches: getCaches(settlement),
+                screen: screen
+            }
         );
-        new MapDrawer();
+        new MapDrawer(screen);
         setAllShops(Shop.allShops);
         setMapLoading(false);
         navigate('/settlement');
@@ -96,7 +118,6 @@ export const PaperProvider = ({ children }) => {
     const updateActiveShopCash = async (moneyObj) => {
         const cloneShop = { ...activeShop, ...moneyObj };
 
-        const axios = useAxios();
         axios.put(
             '/location/',
             cloneShop
@@ -122,8 +143,7 @@ export const PaperProvider = ({ children }) => {
         setActiveNPC,
         createAndDrawNewSettlement,
         drawExistingSettlement,
-        updateActiveShopCash,
-        addActiveShop
+        updateActiveShopCash
     };
 
     return (

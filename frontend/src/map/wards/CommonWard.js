@@ -1,5 +1,5 @@
 import Ward from './Ward';
-import Visual from '../utils/Visual';
+
 
 export default class CommonWard extends Ward {
 
@@ -8,8 +8,8 @@ export default class CommonWard extends Ward {
 	sizeChaos;
 	emptyProb;
 
-	constructor( model, patch, minSq, gridChaos, sizeChaos, emptyProb=0.04 ) {
-		super( model, patch );
+	constructor(model, patch, minSq, gridChaos, sizeChaos, emptyProb = 0.04) {
+		super(model, patch);
 		this.minSq = minSq;
 		this.gridChaos = gridChaos;
 		this.sizeChaos = sizeChaos;
@@ -18,8 +18,8 @@ export default class CommonWard extends Ward {
 
 	createGeometry() {
 		let block = this.getCityBlock();
-		this.geometry = Ward.createAlleys( block, this.minSq, this.gridChaos, this.sizeChaos, this.emptyProb );
-		if (!this.model.isEnclosed( this.patch ))
+		this.geometry = Ward.createAlleys(block, this.minSq, this.gridChaos, this.sizeChaos, this.emptyProb);
+		if (!this.model.isEnclosed(this.patch))
 			this.filterOutskirts();
 	}
 }

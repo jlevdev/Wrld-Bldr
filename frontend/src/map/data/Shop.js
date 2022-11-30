@@ -1,7 +1,7 @@
 import { Path } from "paper/dist/paper-full";
-import { Paper } from "../../components/SettlementBuilder/Paper";
 import Item from "./Item";
 import Graphics from "../render/Graphics";
+import Model from "map/building/Model";
 
 export default class Shop extends Path {
   locationData = null;
@@ -42,7 +42,7 @@ export default class Shop extends Path {
 
       const g = new Graphics(false);
       g.drawRaster(
-        Paper.i.props.iconCache[this.locationData.location_type.name],
+        Model.instance.iconCache[this.locationData.location_type.name],
         this.center,
         0.08
       );
@@ -58,6 +58,7 @@ export default class Shop extends Path {
   };
 
   onMouseDown = () => {
+    //! Resolve
     if (this.locationData != null) Paper.SetActiveShop(this);
   };
 

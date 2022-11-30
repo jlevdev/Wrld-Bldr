@@ -4,7 +4,9 @@ import usePaper from "hooks/usePaper";
 import Panel from "components/Panel";
 import Sidebar from "./Sidebar";
 import InfoHeader from "./InfoHeader";
-import InfoBody from "./InfoBody";
+import InventoryPanel from "./InventoryPanel";
+import NPCPanel from "./NPCPanel";
+
 
 const Styled = {};
 
@@ -28,7 +30,8 @@ function Settlement() {
         <Sidebar />
         <Styled.InfoContainer>
           <InfoHeader />
-          <InfoBody />
+          <NPCPanel />
+          <InventoryPanel />
         </Styled.InfoContainer>
       </Styled.Container>
     </Panel>

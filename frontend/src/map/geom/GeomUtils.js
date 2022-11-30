@@ -1,5 +1,5 @@
 import Point from "./Point";
-import Visual from "../utils/Visual";
+
 import Polygon from "./Polygon";
 
 export default class GeomUtils {
@@ -113,25 +113,25 @@ export default class GeomUtils {
     options.nTries = typeof options.nTries === "undefined" ? 5 : options.nTries;
 
     /*
-		if options.angle
-		if options.angle instanceof Array then angles = options.angle
-		else if typeof options.angle is 'number' then angles = [options.angle]
-		else if typeof options.angle is 'string' and not isNaN(options.angle) then angles = [Number(options.angle)]
-		if not angles? then angles = d3.range -90, 90+angleStep, angleStep*/
+    if options.angle
+    if options.angle instanceof Array then angles = options.angle
+    else if typeof options.angle is 'number' then angles = [options.angle]
+    else if typeof options.angle is 'string' and not isNaN(options.angle) then angles = [Number(options.angle)]
+    if not angles? then angles = d3.range -90, 90+angleStep, angleStep*/
     const angles = GeomUtils.range(-90, 90 + angleStep, angleStep);
     let origins = [];
 
     /*
-		if options.aspectRatio?
-		if options.aspectRatio instanceof Array then aspectRatios = options.aspectRatio
-		else if typeof options.aspectRatio is 'number' then aspectRatios = [options.aspectRatio]
-		else if typeof options.aspectRatio is 'string' and not isNaN(options.aspectRatio) then aspectRatios = [Number(options.aspectRatio)]
-		*/
+    if options.aspectRatio?
+    if options.aspectRatio instanceof Array then aspectRatios = options.aspectRatio
+    else if typeof options.aspectRatio is 'number' then aspectRatios = [options.aspectRatio]
+    else if typeof options.aspectRatio is 'string' and not isNaN(options.aspectRatio) then aspectRatios = [Number(options.aspectRatio)]
+    */
 
     /*if options.origin?
-		if options.origin instanceof Array
-			if options.origin[0] instanceof Array then origins = options.origin
-			else origins = [options.origin]*/
+    if options.origin instanceof Array
+      if options.origin[0] instanceof Array then origins = options.origin
+      else origins = [options.origin]*/
     const area = poly.area();
     // get the width of the bounding box of the original polygon to determine tolerance
     var [minx, maxx] = poly.extent((d) => d.x);
@@ -139,10 +139,10 @@ export default class GeomUtils {
 
     // simplify polygon
     /* my polygons are pretty simple already
-		let tolerance = Math.min(maxx - minx, maxy - miny) * options.tolerance
-		if (tolerance > 0) {
-			poly = GeomUtils.simplify(poly, tolerance)
-		}*/
+    let tolerance = Math.min(maxx - minx, maxy - miny) * options.tolerance
+    if (tolerance > 0) {
+      poly = GeomUtils.simplify(poly, tolerance)
+    }*/
 
     // get the width of the bounding box of the simplified polygon
     var [minx, maxx] = poly.extent((d) => d.x);
@@ -361,8 +361,8 @@ export default class GeomUtils {
         (n = arguments.length) < 2
           ? ((stop = start), (start = 0), 1)
           : n < 3
-          ? 1
-          : +step);
+            ? 1
+            : +step);
 
     var i = -1,
       n = Math.max(0, Math.ceil((stop - start) / step)) | 0,
@@ -385,10 +385,10 @@ export default class GeomUtils {
   }
 
   /*
-	(c) 2013, Vladimir Agafonkin
-	Simplify.js, a high-performance JS polyline simplification library
-	mourner.github.io/simplify-js
-	*/
+  (c) 2013, Vladimir Agafonkin
+  Simplify.js, a high-performance JS polyline simplification library
+  mourner.github.io/simplify-js
+  */
   static simplify(points, tolerance, highestQuality) {
     //// Helper functions ///////////////////////////
     // square distance between 2 points

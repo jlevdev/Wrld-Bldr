@@ -23,9 +23,8 @@ import Patch from "./Patch";
 import Topology from "./Topology";
 
 import Point from "../geom/Point";
-import Visual from "../utils/Visual";
+
 import District from "./District";
-import Paper from "../../components/SettlementBuilder/Paper";
 
 /**
  * This file is the workhorse for creating everything to do with the map. It's a singleton that draws a map from a seed
@@ -109,12 +108,29 @@ export default class Model {
 
   allDistricts = [];
 
-  constructor(nPatches = -1, seed = -1) {
-    console.log("SEED", seed);
+  locationCache = null;
+  iconCache = null;
+  NPCCache = null;
+  ItemCache = null;
+
+  screen = null;
+
+  constructor(options) {
     Model.instance = this;
 
-    if (seed > 0) Random.reset(seed);
-    this.nPatches = nPatches != -1 ? nPatches : 15;
+    console.log(options)
+    if (options.caches) {
+      this.locationCache = [...options.caches.location];
+
+      this.NPCCache = [...options.caches.npc];
+
+      this.iconCache = Object.assign({}, options.caches.icons);
+    }
+
+    this.screen = options.screen;
+
+    if (options.seed > 0) Random.reset(options.seed);
+    this.nPatches = options.nPatches != -1 ? options.nPatches : 15;
     //might be dependant on user input settings later
     this.plazaNeeded = true; //Random.bool();
     this.citadelNeeded = false; //Random.bool();
@@ -164,7 +180,7 @@ export default class Model {
       pointX = Math.cos(a) * r;
       pointY = Math.sin(a) * r;
       points.push(
-        new Point(pointX + Paper.screen.w / 2, pointY + Paper.screen.h / 2)
+        new Point(pointX + this.screen.w / 2, pointY + this.screen.h / 2)
       );
     }
 
@@ -180,9 +196,9 @@ export default class Model {
       voronoi = Voronoi.relax(voronoi, toRelax);
     }
     /*
-				voronoi.points.sort( ( p1, p2 ) => {
-					return MathUtils.sign( p1.length - p2.length ) 
-				});*/
+        voronoi.points.sort( ( p1, p2 ) => {
+          return MathUtils.sign( p1.length - p2.length ) 
+        });*/
 
     let regions = voronoi.partioning();
 
@@ -197,7 +213,7 @@ export default class Model {
       this.patches.push(patch);
 
       if (count == 0) {
-        const screenCenter = new Point(Paper.screen.w / 2, Paper.screen.h / 2);
+        const screenCenter = new Point(this.screen.w / 2, this.screen.h / 2);
         this.center = ArrayUtils.min(patch.shape, (p) => {
           return Point.distance(p, screenCenter);
         });
@@ -239,8 +255,8 @@ export default class Model {
       let end =
         this.plaza != null
           ? ArrayUtils.min(this.plaza.shape, function (v) {
-              return Point.distance(v, gate);
-            })
+            return Point.distance(v, gate);
+          })
           : this.center;
       let street = this.topology.buildPath(gate, end, this.topology.outer);
 
@@ -255,7 +271,7 @@ export default class Model {
           //we compensate for the fact that 0,0 is in the top left of the screen instead of the center
           //as it usually is on a graph. This lets negative points (vectors) search further into the top and left quads
           let dir = gate
-            .subtract(new Point(Paper.screen.w / 2, Paper.screen.h / 2))
+            .subtract(new Point(this.screen.w / 2, this.screen.h / 2))
             .norm(1000, true);
           let start = null;
           let dist = Number.POSITIVE_INFINITY;
@@ -263,16 +279,16 @@ export default class Model {
             let offScreen = false;
 
             if (p.x < 1) lessthanX++;
-            else if (p.x > Paper.screen.w) greaterthanX++;
+            else if (p.x > this.screen.w) greaterthanX++;
 
             if (p.y < 1) lessthanY++;
-            else if (p.y > Paper.screen.h) greaterthanY++;
+            else if (p.y > this.screen.h) greaterthanY++;
 
             if (
               p.x < 1 ||
-              p.x > Paper.screen.w ||
+              p.x > this.screen.w ||
               p.y < 1 ||
-              p.y > Paper.screen.h
+              p.y > this.screen.h
             ) {
               offScreen = true;
             }

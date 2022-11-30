@@ -1,13 +1,13 @@
 import Graphics from "../render/Graphics";
 import Random from "./Random";
 
-export default class Visual {
+export default class CanvasDebugVisualizer {
 
     static toRender = [];
 
-    static sib(points, colorize=false, cStep=20, limit=null, log=false, numbers=false) {
-        Visual.toRender.push([Visual.renderSib, {points, colorize, cStep, limit, log, numbers}]);
-    }  
+    static sib(points, colorize = false, cStep = 20, limit = null, log = false, numbers = false) {
+        CanvasDebugVisualizer.toRender.push([CanvasDebugVisualizer.renderSib, { points, colorize, cStep, limit, log, numbers }]);
+    }
 
     static renderSib(o) {
         let points = o.points;
@@ -21,7 +21,7 @@ export default class Visual {
         const c = points.slice(0);
         let lastStep = 0;
 
-        if (typeof colorize==='string') {
+        if (typeof colorize === 'string') {
             g.beginFill(colorize)
             colorize = false;
         }
@@ -31,11 +31,11 @@ export default class Visual {
         c.forEach(p => {
             lastStep++;
             count++;
-            if (limit!==null && count>limit)
+            if (limit !== null && count > limit)
                 return;
-            if (colorize && lastStep>cStep) {
-                g.beginFill(Visual.randomColor());
-                lastStep=0;
+            if (colorize && lastStep > cStep) {
+                g.beginFill(CanvasDebugVisualizer.randomColor());
+                lastStep = 0;
             }
             if (numbers)
                 g.drawText(p.x, p.y, count);
@@ -46,8 +46,8 @@ export default class Visual {
         });
     }
 
-    static polygon(points, opaque=true, opacity=0.3) {
-        Visual.toRender.push([Visual.renderPolygon, {points, opaque, opacity}]);
+    static polygon(points, opaque = true, opacity = 0.3) {
+        CanvasDebugVisualizer.toRender.push([CanvasDebugVisualizer.renderPolygon, { points, opaque, opacity }]);
     }
 
     static renderPolygon(o) {
@@ -56,70 +56,70 @@ export default class Visual {
         let opacity = o.opacity;
 
         const g = new Graphics();
-        let c = opaque ? Visual.randomColor() : Visual.randomTransColor(opacity);
+        let c = opaque ? CanvasDebugVisualizer.randomColor() : CanvasDebugVisualizer.randomTransColor(opacity);
         g.beginFill(c);
         g.drawPolygon(o.points);
     }
 
     static drawRectangle(p1, width, height, angle) {
-        Visual.toRender.push([ Visual.renderRectangle, {p1, width, height, angle}] )
+        CanvasDebugVisualizer.toRender.push([CanvasDebugVisualizer.renderRectangle, { p1, width, height, angle }])
     }
 
     static renderRectangle(o) {
         const g = new Graphics();
-        g.beginFill(Visual.randomColor());
-        g.lineStyle(0, Visual.randomColor());
+        g.beginFill(CanvasDebugVisualizer.randomColor());
+        g.lineStyle(0, CanvasDebugVisualizer.randomColor());
         g.drawRectangle(o.p1, o.width, o.height, o.angle);
     }
 
     static drawLine(p1, p2) {
-        Visual.toRender.push([ Visual.renderLine, {p1, p2}] )
+        CanvasDebugVisualizer.toRender.push([CanvasDebugVisualizer.renderLine, { p1, p2 }])
     }
 
     static renderLine(o) {
         const g = new Graphics();
-        g.lineStyle(50, Visual.randomColor());
+        g.lineStyle(50, CanvasDebugVisualizer.randomColor());
         g.drawLine(o.p1, o.p2);
-        
+
     }
 
     static drawRoads(points) {
-        Visual.toRender.push([Visual.renderRoads, {points}]);
+        CanvasDebugVisualizer.toRender.push([CanvasDebugVisualizer.renderRoads, { points }]);
     }
 
-    static drawDots(points, size=10, preScaled=false) {
-        Visual.toRender.push([ Visual.renderDots, {points, size, preScaled} ])
+    static drawDots(points, size = 10, preScaled = false) {
+        CanvasDebugVisualizer.toRender.push([CanvasDebugVisualizer.renderDots, { points, size, preScaled }])
     }
 
     static renderDots(o) {
         let points = o.points;
         let preScaled = o.preScaled;
         const g = new Graphics();
-        g.beginFill(Visual.randomColor());
-        points.forEach( p => {
+        g.beginFill(CanvasDebugVisualizer.randomColor());
+        points.forEach(p => {
             g.drawCircle(p.x, p.y, o.size, preScaled);
         })
     }
 
     static renderRoads(o) {
         const g = new Graphics();
-        g.lineStyle(3, Visual.randomTransColor());
+        g.lineStyle(3, CanvasDebugVisualizer.randomTransColor());
         g.drawPolyline(o.points);
     }
 
-    static randomTransColor(opacity=0.4) {
-        let r = Random.int(0,255);
-        let g = Random.int(0,255);
-        let b = Random.int(0,255);
-        return 'rgba('+r+','+g+','+b+','+opacity+')';
+    static randomTransColor(opacity = 0.4) {
+        let r = Random.int(0, 255);
+        let g = Random.int(0, 255);
+        let b = Random.int(0, 255);
+        return 'rgba(' + r + ',' + g + ',' + b + ',' + opacity + ')';
     }
 
     static randomColor() {
-        return '#'+Math.floor(Math.random()*16777215).toString(16);
+        return '#' + Math.floor(Math.random() * 16777215).toString(16);
     }
 
     static drawText(p, text) {
-        Visual.toRender.push([Visual.renderText, {p, text}]);
+        CanvasDebugVisualizer.toRender.push([CanvasDebugVisualizer.renderText, { p, text }]);
     }
 
     static renderText(o) {
@@ -129,7 +129,7 @@ export default class Visual {
     }
 
     static render() {
-        Visual.toRender.forEach(e => {
+        CanvasDebugVisualizer.toRender.forEach(e => {
             e[0](e[1]);
         });
     }

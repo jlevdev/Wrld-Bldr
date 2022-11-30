@@ -1,5 +1,5 @@
 import ArrayUtils from "../utils/ArrayUtils";
-import Visual from "../utils/Visual";
+
 
 export default class Graph {
   nodes = []; //: Array<Node> = [];

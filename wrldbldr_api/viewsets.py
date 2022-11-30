@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from .serializers import BackgroundSerializer, IconSerializer, SettlementSerializer, ItemSerializer, LocationSerializer, NPCSerializer, AvatarSerializer
 from rest_framework.decorators import action
 from copy import copy
+from rest_framework.exceptions import APIException
 
 
 class AvatarViewSet(viewsets.ModelViewSet):
@@ -37,6 +38,14 @@ class LocationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     serializer_class = LocationSerializer
 
+    @action(methods=["get"], detail=True, url_path="npcs", url_name="npcs")
+    def get_npcs(self, request, pk=None):
+        q = NPC.objects.filter(location_id=pk)
+        if q:
+            return Response(data=NPCSerializer(q, many=True).data)
+        return Response({"message": "No npcs found for that location"},
+                        status=status.HTTP_404_NOT_FOUND)
+
 
 class NPCViewSet(viewsets.ModelViewSet):
     queryset = NPC.objects.all()
@@ -59,7 +68,7 @@ class SettlementViewSet(viewsets.ModelViewSet):
         settlement_name = request.data["name"]
         settlement_map_data = request.data["mapData"]
 
-        if request.data["clone"]:
+        if "clone" in request.data:
             # duplicate settlement
             return Response({"message": "clone feature not implemented"},
                             status=status.HTTP_400_BAD_REQUEST)
@@ -73,9 +82,10 @@ class SettlementViewSet(viewsets.ModelViewSet):
         new_settlement = Settlement.objects.create_with_random_shops(
             name=settlement_name,
             map_data=settlement_map_data,
-            owner_id=settlement_owner)
+            owner_id=settlement_owner
+        )
 
-        mega_object = self.get_mega_object(new_settlement.id)
+        mega_object = self.generate_mega_object(new_settlement.id)
 
         return Response(data=mega_object)
 
@@ -86,6 +96,7 @@ class SettlementViewSet(viewsets.ModelViewSet):
         lq = Location.objects.filter(settlement_id=pk)
 
         mega_object["locations"] = []
+        mega_object["icons"] = {}
 
         locations = LocationSerializer(lq, many=True).data
 
@@ -101,6 +112,10 @@ class SettlementViewSet(viewsets.ModelViewSet):
                 items, many=True).data
 
             mega_object["locations"].append(temp)
+
+            iconName = str(loc["location_type"]["name"]).lower()
+            icon = Icon.objects.get(pk=iconName)
+            mega_object["icons"][iconName] = IconSerializer(icon).data
 
         return mega_object
 

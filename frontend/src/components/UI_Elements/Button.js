@@ -69,12 +69,6 @@ export const Button = styled(
         },
         ref
       ) => {
-        const handleClick = useCallback(
-          (e) => {
-            onClick({ event: e, id, restProps });
-          },
-          [onClick, id, restProps]
-        );
         return (
           <>
             <Styled.Button
@@ -83,7 +77,7 @@ export const Button = styled(
               style={style}
               color={color}
               disabled={disabled || busy}
-              onClick={handleClick}
+              onClick={onClick}
             >
               {children}
             </Styled.Button>

@@ -3,7 +3,7 @@ import { Rectangle } from "paper/dist/paper-full";
 import Point from "./Point";
 
 import MathUtils from "../utils/MathUtils";
-import Visual from "../utils/Visual";
+
 import GeomUtils from "./GeomUtils";
 
 export default class Polygon extends Array {

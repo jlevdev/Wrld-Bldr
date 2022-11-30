@@ -7,6 +7,7 @@ import styled, { ThemeProvider } from "styled-components";
 import Routing from "./components/Routing";
 import { theme } from "theme";
 import { AuthProvider } from "context/AuthContext";
+import { PaperProvider } from "context/PaperContext";
 
 const Styled = {};
 
@@ -43,11 +44,13 @@ function App() {
     <React.StrictMode>
       <ThemeProvider theme={theme}>
         <AuthProvider>
-          <Header />
-          <Styled.WallpaperBackground />
-          <Container sx={{ paddingTop: "80px" }}>
-            <Routing />
-          </Container>
+          <PaperProvider>
+            <Header />
+            <Styled.WallpaperBackground />
+            <Container sx={{ paddingTop: "80px" }}>
+              <Routing />
+            </Container>
+          </PaperProvider>
         </AuthProvider>
       </ThemeProvider>
     </React.StrictMode>

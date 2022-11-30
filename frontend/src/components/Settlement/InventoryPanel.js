@@ -2,13 +2,11 @@ import styled from "styled-components";
 import React from "react";
 import usePaper from "hooks/usePaper";
 import { Autocomplete, TextField } from "@mui/material";
-import Item from "Map/data/Item";
+import Item from "map/data/Item";
 
 const Styled = {};
 
-Styled.Autocomplete = styled(Autocomplete)`
-
-`;
+Styled.Autocomplete = styled(Autocomplete)``;
 
 Styled.InventoryList = styled.ul``;
 

@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components";
-import React, { useCallback } from "react";
+import styled from "styled-components";
+import React from "react";
 
 const Styled = {};
 
@@ -30,7 +30,7 @@ export const Heading = (props) => {
     <>
       {(size == 1 || !size) && <Styled.H1 style={style}>{children}</Styled.H1>}
       {size == 2 && <Styled.H2 style={style}>{children}</Styled.H2>}
-      {size == 3 && <Styled.H3 style={style}>{children}</Styled.H3>}
+      {size == 3 && <Styled.H3>{children}</Styled.H3>}
     </>
   );
 };

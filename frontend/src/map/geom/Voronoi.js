@@ -2,7 +2,7 @@ import Point from "./Point";
 import MathUtils from "../utils/MathUtils";
 
 import ArrayUtils from "../utils/ArrayUtils";
-import Visual from "../utils/Visual";
+
 
 export default class Voronoi {
   triangles; //Array<Triangle>;

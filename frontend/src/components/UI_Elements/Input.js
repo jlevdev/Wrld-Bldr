@@ -12,9 +12,9 @@ Styled.Input = styled.input`
   margin: 0 0 10px 0;
 `;
 
-export const Input = (props) => {
+export const Input = React.memo(React.forwardRef((props, ref) => {
   const { type, ...restProps } = props;
-  return <Styled.Input {...restProps} type={type} />;
-};
+  return <Styled.Input {...restProps} type={type} ref={ref} />;
+}))
 
 export default Input;

@@ -1,7 +1,7 @@
 import Ward from './Ward';
 import GeomUtils from '../geom/GeomUtils';
 import Point from '../geom/Point';
-import Visual from '../utils/Visual';
+
 
 export default class Cathedral extends Ward {
 
@@ -10,14 +10,14 @@ export default class Cathedral extends Ward {
 
 		this.geometry = GeomUtils.largestRect(block)[0];
 	}
-	static rateLocation( model, patch ) {	
+	static rateLocation(model, patch) {
 		// Ideally the main temple should overlook the plaza,
 		// otherwise it should be as close to the plaza as possible
-		if (model.plaza != null && patch.shape.borders( model.plaza.shape ))
-			return -1/patch.shape.square
+		if (model.plaza != null && patch.shape.borders(model.plaza.shape))
+			return -1 / patch.shape.square
 		else
-			return patch.shape.distance( model.plaza != null ? model.plaza.shape.center : model.center ) * patch.shape.square;
+			return patch.shape.distance(model.plaza != null ? model.plaza.shape.center : model.center) * patch.shape.square;
 	}
 
-	getLabel() {return Ward.CATHEDRAL_WARD;}
+	getLabel() { return Ward.CATHEDRAL_WARD; }
 }
