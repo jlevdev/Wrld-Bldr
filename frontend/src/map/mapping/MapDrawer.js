@@ -3,7 +3,6 @@ import Model from "../building/Model";
 import Ward from "../wards/Ward";
 import Palette from "./Palette";
 import Brush from "./Brush";
-import Shop from "../data/Shop";
 import Random from "../utils/Random";
 import Visual from "../utils/Visual";
 import Paper from "../../components/SettlementBuilder/Paper";

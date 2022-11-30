@@ -3,6 +3,7 @@ import Model from "map/building/Model";
 import MapDrawer from "map/mapping/MapDrawer";
 import useAxios from "hooks/UseAxios";
 import { useNavigate } from "react-router-dom";
+import Shop from "Map/data/Shop";
 
 const PaperContext = createContext();
 
@@ -17,6 +18,7 @@ export const PaperProvider = ({ children }) => {
     const [activeSettlement, setActiveSettlement] = useState(null);
     const [activeShop, setActiveShop] = useState(null);
     const [activeNPC, setActiveNPC] = useState(null);
+    const [allShops, setAllShops] = useState([]);
 
     const freshPaper = () => {
         Model.instance = null;
@@ -25,6 +27,7 @@ export const PaperProvider = ({ children }) => {
         setActiveSettlement(null);
         setActiveShop(null);
         setActiveNPC(null);
+        setAllShops([]);
     }
 
     const generateShopIndexes = (mapData) => {
@@ -85,8 +88,27 @@ export const PaperProvider = ({ children }) => {
             activeSettlement.mapData.seed
         );
         new MapDrawer();
+        setAllShops(Shop.allShops);
         setMapLoading(false);
         navigate('/settlement');
+    }
+
+    const updateActiveShopCash = async (moneyObj) => {
+        const cloneShop = { ...activeShop, ...moneyObj };
+
+        const axios = useAxios();
+        axios.put(
+            '/location/',
+            cloneShop
+        ).then((res) => {
+            const trueShop = res.data;
+            console.assert(
+                (cloneShop.gold === trueShop.gold) &&
+                (cloneShop.silver === trueShop.silver) &&
+                (cloneShop.copper === trueShop.copper));
+
+        }).catch((err) => console.log(err));
+
     }
 
     const contextData = {
@@ -99,7 +121,9 @@ export const PaperProvider = ({ children }) => {
         setActiveShop,
         setActiveNPC,
         createAndDrawNewSettlement,
-        drawExistingSettlement
+        drawExistingSettlement,
+        updateActiveShopCash,
+        addActiveShop
     };
 
     return (

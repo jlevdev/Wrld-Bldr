@@ -1,12 +1,12 @@
 import { Path } from "paper/dist/paper-full";
 import { Paper } from "../../components/SettlementBuilder/Paper";
 import Item from "./Item";
-import axios from "axios";
 import Graphics from "../render/Graphics";
 
 export default class Shop extends Path {
   locationData = null;
   npcs = [];
+  static allShops = [];
 
   constructor(segs, initData) {
     super(segs);
@@ -38,7 +38,7 @@ export default class Shop extends Path {
 
   initShop() {
     if (this.locationData != null) {
-      Paper.addActiveShop(this);
+      allShops.push(this);
 
       const g = new Graphics(false);
       g.drawRaster(
