@@ -1,12 +1,30 @@
-from django.db.models.query import QuerySet
-from rest_framework import status
-from wrldbldr.models import Settlement, Item, NPC, Location, Avatar, Icon, Background, Location_Type
-from rest_framework import viewsets, permissions
-from rest_framework.response import Response
-from .serializers import BackgroundSerializer, IconSerializer, SettlementSerializer, ItemSerializer, LocationSerializer, NPCSerializer, AvatarSerializer
-from rest_framework.decorators import action
 from copy import copy
+
+from rest_framework import permissions, status, viewsets
+from rest_framework.decorators import action
 from rest_framework.exceptions import APIException
+from rest_framework.response import Response
+
+from wrldbldr.models import (
+    NPC,
+    Avatar,
+    Background,
+    Icon,
+    Item,
+    Location,
+    Location_Type,
+    Settlement,
+)
+
+from .serializers import (
+    AvatarSerializer,
+    BackgroundSerializer,
+    IconSerializer,
+    ItemSerializer,
+    LocationSerializer,
+    NPCSerializer,
+    SettlementSerializer,
+)
 
 
 class AvatarViewSet(viewsets.ModelViewSet):
@@ -43,8 +61,10 @@ class LocationViewSet(viewsets.ModelViewSet):
         q = NPC.objects.filter(location_id=pk)
         if q:
             return Response(data=NPCSerializer(q, many=True).data)
-        return Response({"message": "No npcs found for that location"},
-                        status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"message": "No npcs found for that location"},
+            status=status.HTTP_404_NOT_FOUND,
+        )
 
 
 class NPCViewSet(viewsets.ModelViewSet):
@@ -57,12 +77,14 @@ class SettlementViewSet(viewsets.ModelViewSet):
     queryset = Settlement.objects.all()
     permission_classes = [permissions.AllowAny]
     serializer_class = SettlementSerializer
+    # asfas
 
     def create(self, request, *args, **kwargs):
         if not ("name" in request.data) or not ("mapData" in request.data):
             return Response(
                 {"message": "settlement creation requires name and map data"},
-                status=status.HTTP_400_BAD_REQUEST)
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         settlement_owner = request.user.id or 1
         settlement_name = request.data["name"]
@@ -70,19 +92,22 @@ class SettlementViewSet(viewsets.ModelViewSet):
 
         if "clone" in request.data:
             # duplicate settlement
-            return Response({"message": "clone feature not implemented"},
-                            status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message": "clone feature not implemented"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         if Settlement.objects.filter(name=request.data["name"]):
             # some response for unique names
             return Response(
                 {"message": "a settlement with this name already exists"},
-                status=status.HTTP_400_BAD_REQUEST)
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         # create via model methods
         new_settlement = Settlement.objects.create_with_random_shops(
             name=settlement_name,
             map_data=settlement_map_data,
-            owner_id=settlement_owner
+            owner_id=settlement_owner,
         )
 
         mega_object = self.generate_mega_object(new_settlement.id)
@@ -104,12 +129,10 @@ class SettlementViewSet(viewsets.ModelViewSet):
             temp = copy(loc)
 
             npcs = NPC.objects.filter(location_id=loc["id"])
-            temp["npcs"] = NPCSerializer(
-                npcs, many=True).data
+            temp["npcs"] = NPCSerializer(npcs, many=True).data
 
             items = Item.objects.all().filter(location_id=loc["id"])
-            temp["items"] = ItemSerializer(
-                items, many=True).data
+            temp["items"] = ItemSerializer(items, many=True).data
 
             mega_object["locations"].append(temp)
 

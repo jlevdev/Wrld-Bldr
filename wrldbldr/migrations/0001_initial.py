@@ -15,23 +15,44 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Settlement',
+            name="Settlement",
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('map_data', models.TextField(default='')),
-                ('name', models.CharField(default='No Name Given', max_length=200, unique=True)),
-                ('owner', models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("map_data", models.TextField(default="")),
+                (
+                    "name",
+                    models.CharField(
+                        default="No Name Given", max_length=200, unique=True
+                    ),
+                ),
+                (
+                    "owner",
+                    models.ForeignKey(
+                        default=None,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Location',
+            name="Location",
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('description', models.TextField(blank=True, default='')),
-                ('name', models.CharField(default='No Name Given', max_length=200)),
-                ('settlement', models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.CASCADE, to='wrldbldr.settlement')),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("description", models.TextField(blank=True, default="")),
+                ("name", models.CharField(default="No Name Given", max_length=200)),
+                (
+                    "settlement",
+                    models.ForeignKey(
+                        default=None,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="wrldbldr.settlement",
+                    ),
+                ),
             ],
         ),
     ]

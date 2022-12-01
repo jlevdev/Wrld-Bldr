@@ -7,11 +7,11 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 
-
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
+
 
 class BlacklistTokenUpdateView(APIView):
     authentication_classes = ()
@@ -25,6 +25,7 @@ class BlacklistTokenUpdateView(APIView):
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
 class UserView(generics.RetrieveAPIView):
     model = User
     serializer_class = UserSerializer
@@ -33,9 +34,10 @@ class UserView(generics.RetrieveAPIView):
         """
         If provided 'pk' is "me" then return the current user.
         """
-        if request.user and pk == 'me':
+        if request.user and pk == "me":
             return Response(UserSerializer(request.user).data)
         return super(UserView, self).retrieve(request, pk)
+
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer

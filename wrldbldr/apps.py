@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class WrldbldrConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'wrldbldr'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "wrldbldr"
