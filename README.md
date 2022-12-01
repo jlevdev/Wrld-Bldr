@@ -1,5 +1,3 @@
-# Setup
-
 ## Requirements
 - npm installed
 - A way to switch into Python 3.8.10 (e.g. venv)
