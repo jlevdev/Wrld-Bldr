@@ -1,0 +1,1 @@
+docker run -d --name wbdb -p 5432:5432 -e POSTGRES_PASSWORD=BatVale001 -e POSTGRES_USER=postgres -e POSTGRES_DB=wrldbldr postgres:bullseye

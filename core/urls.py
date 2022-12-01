@@ -24,5 +24,5 @@ urlpatterns = [
     path('api/', include('wrldbldr_api.urls')),
     path('api/auth/', include('auth.urls')),
     path('', include('frontend.urls')),
-    re_path(r'^.*/$', include('frontend.urls')),
+    re_path(r'^.*/', include('frontend.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
