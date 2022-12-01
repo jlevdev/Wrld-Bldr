@@ -5,9 +5,11 @@
 - A way to switch into Python 3.8.10 (e.g. venv)
 - powershell ver 7
 - Docker
+- The .env file (not stored on github)
 - The ability to convert my powershell scripts into bash (mac devs ;D)
 
 ## Windows Steps
+- Add the .env file to the same directory as manage.py
 - Open powershell (version 7) and run `./db-setup.ps1`
 - setup venv or switch to python 3.8.10 in global environment for your machine
 - `pip install -r ./requirements.txt`
