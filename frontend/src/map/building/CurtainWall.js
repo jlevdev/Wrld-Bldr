@@ -1,11 +1,9 @@
 import Point from "../geom/Point";
 
-import Polygon from '../geom/Polygon';
 import Random from '../utils/Random';
 import Model from './Model';
 
 import ArrayUtils from '../utils/ArrayUtils';
-import PointUtils from '../utils/PointUtils';
 
 
 export default class CurtainWall {
@@ -36,7 +34,7 @@ export default class CurtainWall {
 			}
 		}
 
-		//TODO ???
+		//TODO why the fuck is it just returning true for all of them
 		this.segments = this.shape.map((v) => true);
 
 		this.buildGates(real, model, reserved);
@@ -57,7 +55,7 @@ export default class CurtainWall {
 		}
 
 		if (entrances.length == 0)
-			throw "Bad walled area shape!";
+			throw "Bad walled area shape! - No Entrances";
 
 		//randomly choose number of gates
 		const gateNum = Random.int(1, 5);
@@ -110,7 +108,7 @@ export default class CurtainWall {
 		} while (entrances.length >= 3 && this.gates.length < gateNum);
 
 		if (this.gates.length == 0)
-			throw new Error("Bad walled area shape!");
+			throw new Error("Bad walled area shape! - No Gates");
 
 		// Smooth further sections of the wall with gates
 		if (real)

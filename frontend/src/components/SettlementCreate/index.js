@@ -1,11 +1,10 @@
 import Panel from "components/Panel";
 import Button from "components/UI_Elements/Button";
-import React from "react";
-import { useCallback, useRef } from "react";
-import usePaper from "hooks/usePaper";
-import Input from "components/UI_Elements/Input";
-import styled from "styled-components";
 import Heading from "components/UI_Elements/Heading";
+import Input from "components/UI_Elements/Input";
+import usePaper from "hooks/usePaper";
+import { useCallback, useRef } from "react";
+import styled from "styled-components";
 
 const Styled = {};
 
@@ -29,7 +28,7 @@ function SettlementCreate() {
   const { createAndDrawNewSettlement } = usePaper();
 
   const handleClick = useCallback(() => {
-    createAndDrawNewSettlement({ 'name': titleRef.current.value, 'seed': seedRef.current.value });
+    createAndDrawNewSettlement({ 'name': titleRef.current.value, 'mapData': { 'seed': seedRef.current.value } });
   }, [titleRef, seedRef]);
 
   return (

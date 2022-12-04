@@ -1,7 +1,7 @@
-import Random from "../utils/Random";
-import Voronoi from "../geom/Voronoi";
 import Polygon from "../geom/Polygon";
+import Voronoi from "../geom/Voronoi";
 import WB_Segment from "../geom/WB_Segment";
+import Random from "../utils/Random";
 import CurtainWall from "./CurtainWall";
 
 import AdministrationWard from "../wards/AdministrationWard";
@@ -118,7 +118,6 @@ export default class Model {
   constructor(options) {
     Model.instance = this;
 
-    console.log(options)
     if (options.caches) {
       this.locationCache = [...options.caches.location];
 
@@ -130,12 +129,13 @@ export default class Model {
     this.screen = options.screen;
 
     if (options.seed > 0) Random.reset(options.seed);
-    this.nPatches = options.nPatches != -1 ? options.nPatches : 15;
+    this.nPatches = options.size != -1 ? options.size : 15;
     //might be dependant on user input settings later
     this.plazaNeeded = true; //Random.bool();
     this.citadelNeeded = false; //Random.bool();
     this.wallsNeeded = false; //Random.bool();
     this.build();
+    return this;
   }
 
   build() {
@@ -255,8 +255,8 @@ export default class Model {
       let end =
         this.plaza != null
           ? ArrayUtils.min(this.plaza.shape, function (v) {
-            return Point.distance(v, gate);
-          })
+              return Point.distance(v, gate);
+            })
           : this.center;
       let street = this.topology.buildPath(gate, end, this.topology.outer);
 

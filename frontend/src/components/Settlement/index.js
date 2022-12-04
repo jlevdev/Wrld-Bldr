@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import React from "react";
-import usePaper from "hooks/usePaper";
 import Panel from "components/Panel";
-import Sidebar from "./Sidebar";
+import Paper from "components/Paper";
+import usePaper from "hooks/usePaper";
+import { useEffect } from "react";
+import styled from "styled-components";
 import InfoHeader from "./InfoHeader";
 import InventoryPanel from "./InventoryPanel";
 import NPCPanel from "./NPCPanel";
-
+import Sidebar from "./Sidebar";
 
 const Styled = {};
 
@@ -15,26 +15,40 @@ Styled.Container = styled.div`
   flex-direction: column;
 `;
 
+Styled.TopContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
 Styled.InfoContainer = styled.div`
   display: flex;
   flex-direction: row;
 `;
 
 function Settlement() {
-  const { activeSettlement } = usePaper();
+  const { activeSettlement, drawExistingSettlement } = usePaper();
+
+  useEffect(() => {
+    //debug
+    if (!activeSettlement) drawExistingSettlement(40);
+  }, [activeSettlement]);
 
   return (
-    <Panel>
-      <Styled.Container>
-        <Paper />
-        <Sidebar />
-        <Styled.InfoContainer>
-          <InfoHeader />
-          <NPCPanel />
-          <InventoryPanel />
-        </Styled.InfoContainer>
-      </Styled.Container>
-    </Panel>
+    activeSettlement && (
+      <Panel>
+        <Styled.Container>
+          <Styled.TopContainer>
+            <Paper />
+            <Sidebar />
+          </Styled.TopContainer>
+          <Styled.InfoContainer>
+            <InfoHeader />
+            <NPCPanel />
+            <InventoryPanel />
+          </Styled.InfoContainer>
+        </Styled.Container>
+      </Panel>
+    )
   );
 }
 

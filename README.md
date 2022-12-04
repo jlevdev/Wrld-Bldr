@@ -17,3 +17,7 @@
 - Leave the server running, in a separate terminal window run `./db-reset.ps1`
 - Once this finishes yo will have a database with a default use and settlement
 - Ready to dev :D
+
+
+### Notes
+- my setup uses black for the formatter (+ isort vscode extension)

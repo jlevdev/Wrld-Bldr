@@ -1,12 +1,11 @@
 from django.urls import path
+from rest_framework_simplejwt.views import TokenRefreshView
+
 from .views import (
-    RegisterView,
     BlacklistTokenUpdateView,
-    UserView,
     MyTokenObtainPairView,
-)
-from rest_framework_simplejwt.views import (
-    TokenRefreshView,
+    RegisterView,
+    UserView,
 )
 
 app_name = "auth"

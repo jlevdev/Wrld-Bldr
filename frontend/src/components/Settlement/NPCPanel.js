@@ -1,6 +1,5 @@
-import styled from "styled-components";
-import React from "react";
 import usePaper from "hooks/usePaper";
+import styled from "styled-components";
 
 const Styled = {};
 
@@ -12,27 +11,30 @@ Styled.NPCTraitsList = styled.ul``;
 
 Styled.NPCTraitsListItem = styled.li``;
 
-
 function NPCPanel() {
-    const { activeNPC, activeShop } = usePaper();
+  const { activeNPC, activeShop } = usePaper();
 
-    return (
+  return (
+    <>
+      {activeNPC && activeShop && (
         <>
-            {((activeNPC && activeShop) &&
-                <>
-                    <Styled.AvatarPortrait />
-                    <Styled.NPCName>{activeNPC.name} - {activeNPC.profession} </Styled.NPCName>
-                    <Styled.NPCTraitsList>
-                        {
-                            activeNPC.traits.map((t) => {
-                                return <Styled.NPCTraitsListItem key={t}>{t.charAt(0).toUpperCase() + t.substring(1, t.length)}</Styled.NPCTraitsListItem>
-                            })
-                        }
-                    </Styled.NPCTraitsList>
-                </>
-            )}
+          <Styled.AvatarPortrait />
+          <Styled.NPCName>
+            {activeNPC.name} - {activeNPC.profession}{" "}
+          </Styled.NPCName>
+          <Styled.NPCTraitsList>
+            {activeNPC.traits.map((t) => {
+              return (
+                <Styled.NPCTraitsListItem key={t}>
+                  {t.charAt(0).toUpperCase() + t.substring(1, t.length)}
+                </Styled.NPCTraitsListItem>
+              );
+            })}
+          </Styled.NPCTraitsList>
         </>
-    );
+      )}
+    </>
+  );
 }
 
 export default NPCPanel;
