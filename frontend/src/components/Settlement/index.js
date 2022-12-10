@@ -30,7 +30,7 @@ function Settlement() {
 
   useEffect(() => {
     //debug
-    if (!activeSettlement) drawExistingSettlement(40);
+    if (!activeSettlement) drawExistingSettlement(96);
   }, [activeSettlement]);
 
   return (

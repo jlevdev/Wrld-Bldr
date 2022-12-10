@@ -1,6 +1,7 @@
 import useAxios from "hooks/UseAxios";
 import Model from "map/building/Model";
-import MapDrawer from "map/mapping/MapDrawer";
+import Random from "map/utils/Random";
+import Ward from "map/wards/Ward";
 import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -9,7 +10,7 @@ const PaperContext = createContext();
 export default PaperContext;
 
 export const PaperProvider = ({ children }) => {
-  const MAP_DATA_DEFAULT = { seed: 1, size: 40, shopIndexes: [] };
+  const MAP_DATA_DEFAULT = { seed: 1, size: 15, shopIndexes: [] };
   const SCREEN_DEFAULT = { w: 800, h: 600 };
 
   const [screen, setScreen] = useState(SCREEN_DEFAULT);
@@ -18,6 +19,7 @@ export const PaperProvider = ({ children }) => {
   const [activeShop, setActiveShop] = useState(null);
   const [activeNPC, setActiveNPC] = useState(null);
   const [model, setModel] = useState(null);
+  const [shopsForRender, setShopsForRender] = useState([]);
 
   const axios = useAxios();
   const navigate = useNavigate();
@@ -34,19 +36,70 @@ export const PaperProvider = ({ children }) => {
 
   const generateShopIndexes = (mapData) => {
     freshPaper();
+
+    //sorts shops based on size
+    const sortShops = (shops) => {
+      console.log(shops);
+      const sorted = [];
+      Object.keys(shops)
+        .sort((a, b) => {
+          return a - b;
+        })
+        .reverse()
+        .forEach((k, v) => {
+          sorted.push(shops[k]);
+        });
+      console.log(sorted);
+      return sorted;
+    };
+
+    const pickShopIndexes = (shops, mapData) => {
+      const sortedShops = sortShops(shops);
+      const chosenIndexes = [];
+      Random.reset(mapData.seed);
+      const numberOfShops = Random.int(
+        sortedShops.length / 5,
+        sortedShops.length / 3
+      );
+
+      while (chosenIndexes.length < numberOfShops) {
+        for (let i = 0; i < numberOfShops; i++) {
+          if (chosenIndexes.length >= numberOfShops) break;
+          if (
+            chosenIndexes.indexOf(sortedShops[i]) == -1 &&
+            Random.int(0, 10) > 4
+          )
+            chosenIndexes.push(sortedShops[i]);
+        }
+      }
+
+      console.log(numberOfShops, chosenIndexes);
+      return chosenIndexes;
+    };
+
     const { seed, size } = mapData;
     new Model({
       size,
       seed,
       screen,
     });
-    return MapDrawer.generateShopIndexes();
+
+    const allShops = {};
+    Model.instance.patches.forEach((patch, index) => {
+      const label = patch.ward.getLabel();
+
+      if (Ward.shopWards.indexOf(label) != -1) {
+        allShops[Number(patch.shape.perimeter)] = index;
+      }
+    });
+
+    return pickShopIndexes(allShops, mapData);
   };
 
   const createAndDrawNewSettlement = async (options) => {
     freshPaper();
     const finalMapData = { ...MAP_DATA_DEFAULT, ...options.mapData };
-    finalMapData.shopIndexes = [1, 2, 3, 4, 5, 6, 7]; //TODO Resolve generateShopIndexes(finalMapData.seed);
+    finalMapData.shopIndexes = generateShopIndexes(finalMapData);
 
     await axios
       .post("/settlement/", {
@@ -94,6 +147,7 @@ export const PaperProvider = ({ children }) => {
 
   const prepareMapAndNavigate = async (settlement) => {
     Model.instance = null;
+    setShopsForRender([...settlement.locations]);
     setModel(
       new Model({
         size: settlement.map_data.size,
@@ -136,6 +190,7 @@ export const PaperProvider = ({ children }) => {
     updateActiveShopCash,
     model,
     setModel,
+    shopsForRender,
   };
 
   return (

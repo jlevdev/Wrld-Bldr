@@ -126,9 +126,9 @@ const Shop = (props) => {
     points,
     strokeJoin = JOIN_DEFAULT,
     strokeCap = CAP_DEFAULT,
-    locationData,
     fillColor,
     patch,
+    locationData = null,
     ...restProps
   } = props;
 
@@ -158,13 +158,14 @@ const Shop = (props) => {
         //TODO setActiveShop(locationData);
       }}
       onMouseEnter={() => {
-        if (locationData)
+        if (locationData && patch.district)
           setShopFillColor(
-            "#" + addHexColor(district.color.substring(1, 8), "111111")
+            "#" + addHexColor(patch.district.color.substring(1, 8), "111111")
           );
       }}
       onMouseLeave={() => {
-        setShopFillColor(district.color);
+        if (locationData && patch.district)
+          setShopFillColor(patch.district.color);
       }}
       {...restProps}
     />
@@ -172,8 +173,8 @@ const Shop = (props) => {
 };
 
 function Paper() {
-  const { screen, model, activeSettlement } = usePaper();
-
+  const { screen, model, activeSettlement, shopsForRender } = usePaper();
+  const locationsForShops = [...activeSettlement.locations];
   const palette = DEFAULT_PALETTE;
   return (
     model && (
@@ -214,7 +215,6 @@ function Paper() {
 
             {model.patches.map((patch, drawIndex) => {
               const label = patch.ward.getLabel();
-
               if (label === Ward.CASTLE_WARD) {
                 patch.ward.geometry.map((block, index) => {
                   return (
@@ -249,6 +249,10 @@ function Paper() {
                   typeof patch.district == "undefined"
                     ? "#000000"
                     : patch.district.color;
+                const locData =
+                  activeSettlement.map_data.shopIndexes.indexOf(drawIndex) != -1
+                    ? locationsForShops.pop()
+                    : null;
 
                 return (
                   <Shop
@@ -258,11 +262,7 @@ function Paper() {
                     fillColor={c}
                     strokeColor={palette.dark}
                     strokeWidth={NORMAL_STROKE * 3}
-                    locationData={
-                      activeSettlement.map_data.shopIndexes.indexOf(drawIndex)
-                        ? activeSettlement.locations[drawIndex]
-                        : null
-                    }
+                    locationData={locData}
                   />
                 );
               } else if (Ward.sceneryWards.indexOf(label) != -1) {
