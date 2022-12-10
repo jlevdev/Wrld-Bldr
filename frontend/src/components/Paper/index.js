@@ -2,7 +2,7 @@ import { polygonScale } from "geometric";
 import usePaper from "hooks/usePaper";
 import Ward from "map/wards/Ward";
 import { Segment } from "paper/dist/paper-core";
-import { Fragment, useState } from "react";
+import React, { useState } from "react";
 import {
   Canvas,
   Circle,
@@ -72,17 +72,6 @@ const CurvyPolygon = (props) => {
   );
 };
 
-const LineCapHider = (props) => {
-  const { point, size, ...restProps } = { props };
-  return (
-    <Rectangle
-      center={[props.point.x, props.point.y]}
-      size={[size * 5, size * 5]}
-      {...restProps}
-    />
-  );
-};
-
 const Polygon = (props) => {
   const {
     points,
@@ -121,22 +110,19 @@ const PolyLine = (props) => {
   );
 };
 
-const Shop = (props) => {
+const Shop = React.memo((props) => {
   const {
     points,
     strokeJoin = JOIN_DEFAULT,
     strokeCap = CAP_DEFAULT,
     fillColor,
     patch,
-    locationData = null,
+    lsRelations = null,
+    updateRel = null,
     ...restProps
   } = props;
 
-  //const { setActiveShop } = usePaper();
   const [shopFillColor, setShopFillColor] = useState(fillColor);
-  //TODO might be unecessary remove later if not needed
-  //if (patch.district) patch.district.replace(patch, locationData);
-  //patch.shop = locationData;
 
   const addHexColor = (c1, c2) => {
     let hexStr = (parseInt(c1, 16) + parseInt(c2, 16)).toString(16);
@@ -146,6 +132,50 @@ const Shop = (props) => {
     return hexStr;
   };
 
+  const startHover = () => {
+    document.body.style.cursor = "pointer";
+    setShopFillColor(
+      "#" + addHexColor(patch.district.color.substring(1, 8), "111111")
+    );
+  };
+
+  const endHover = () => {
+    document.body.style.cursor = "auto";
+    setShopFillColor(patch.district.color);
+  };
+
+  if (lsRelations && !lsRelations.district) {
+    updateRel({
+      relation: lsRelations,
+      data: {
+        district: patch.district,
+        startHover,
+        endHover,
+      },
+    });
+
+    return (
+      <Path
+        strokeJoin={strokeJoin}
+        strokeCap={strokeCap}
+        segments={points.map((p) => {
+          return pointConversion(p);
+        })}
+        fillColor={shopFillColor}
+        onClick={() => {
+          //TODO setActiveShop(lsRelations);
+        }}
+        onMouseEnter={() => {
+          startHover();
+        }}
+        onMouseLeave={() => {
+          endHover();
+        }}
+        {...restProps}
+      />
+    );
+  }
+
   return (
     <Path
       strokeJoin={strokeJoin}
@@ -154,28 +184,16 @@ const Shop = (props) => {
         return pointConversion(p);
       })}
       fillColor={shopFillColor}
-      onClick={() => {
-        //TODO setActiveShop(locationData);
-      }}
-      onMouseEnter={() => {
-        if (locationData && patch.district)
-          setShopFillColor(
-            "#" + addHexColor(patch.district.color.substring(1, 8), "111111")
-          );
-      }}
-      onMouseLeave={() => {
-        if (locationData && patch.district)
-          setShopFillColor(patch.district.color);
-      }}
       {...restProps}
     />
   );
-};
+});
 
-function Paper() {
-  const { screen, model, activeSettlement, shopsForRender } = usePaper();
-  const locationsForShops = [...activeSettlement.locations];
+const Paper = React.memo(() => {
+  const { screen, model, activeSettlement, locationShopRelations, updateRel } =
+    usePaper();
   const palette = DEFAULT_PALETTE;
+
   return (
     model && (
       <Canvas width={screen.w} height={screen.h}>
@@ -190,21 +208,26 @@ function Paper() {
           <Layer>
             {model.roads.map((road, index) => {
               return (
-                <Fragment key={"roads-" + index}>
-                  <PolyLine
-                    points={road}
-                    smooth={true}
-                    strokeColor={palette.dark}
-                    strokeWidth={(Ward.MAIN_STREET + NORMAL_STROKE) * 6}
-                  />
-                  <PolyLine
-                    points={road}
-                    smooth={true}
-                    strokeColor={palette.paper}
-                    strokeWidth={(Ward.MAIN_STREET + NORMAL_STROKE) * 5}
-                  />
-                  <LineCapHider point={road[0]} fillColor={palette.paper} />
-                </Fragment>
+                <PolyLine
+                  key={"roads-outline-" + index}
+                  points={road}
+                  smooth={true}
+                  strokeColor={palette.dark}
+                  strokeWidth={(Ward.MAIN_STREET + NORMAL_STROKE) * 6}
+                />
+              );
+            })}
+          </Layer>
+          <Layer>
+            {model.roads.map((road, index) => {
+              return (
+                <PolyLine
+                  key={"roads-" + index}
+                  points={road}
+                  smooth={true}
+                  strokeColor={palette.paper}
+                  strokeWidth={(Ward.MAIN_STREET + NORMAL_STROKE) * 5}
+                />
               );
             })}
             {/**
@@ -249,10 +272,10 @@ function Paper() {
                   typeof patch.district == "undefined"
                     ? "#000000"
                     : patch.district.color;
+                const shopIndex =
+                  activeSettlement.map_data.shopIndexes.indexOf(drawIndex);
                 const locData =
-                  activeSettlement.map_data.shopIndexes.indexOf(drawIndex) != -1
-                    ? locationsForShops.pop()
-                    : null;
+                  shopIndex != -1 ? locationShopRelations[shopIndex] : null;
 
                 return (
                   <Shop
@@ -262,7 +285,8 @@ function Paper() {
                     fillColor={c}
                     strokeColor={palette.dark}
                     strokeWidth={NORMAL_STROKE * 3}
-                    locationData={locData}
+                    lsRelations={locData}
+                    updateRel={updateRel}
                   />
                 );
               } else if (Ward.sceneryWards.indexOf(label) != -1) {
@@ -328,6 +352,6 @@ function Paper() {
       </Canvas>
     )
   );
-}
+});
 
 export default Paper;

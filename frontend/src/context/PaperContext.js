@@ -19,7 +19,7 @@ export const PaperProvider = ({ children }) => {
   const [activeShop, setActiveShop] = useState(null);
   const [activeNPC, setActiveNPC] = useState(null);
   const [model, setModel] = useState(null);
-  const [shopsForRender, setShopsForRender] = useState([]);
+  const [locationShopRelations, setLocationShopRelations] = useState([]);
 
   const axios = useAxios();
   const navigate = useNavigate();
@@ -147,7 +147,13 @@ export const PaperProvider = ({ children }) => {
 
   const prepareMapAndNavigate = async (settlement) => {
     Model.instance = null;
-    setShopsForRender([...settlement.locations]);
+    setLocationShopRelations(
+      settlement.locations.map((location) => {
+        return {
+          location,
+        };
+      })
+    );
     setModel(
       new Model({
         size: settlement.map_data.size,
@@ -176,6 +182,18 @@ export const PaperProvider = ({ children }) => {
       .catch((err) => console.log(err));
   };
 
+  const updateRel = (props) => {
+    const { relation, data } = props;
+    setLocationShopRelations(
+      locationShopRelations.map((item) => {
+        if (item.location.id == relation.location.id) {
+          return { ...relation, ...data };
+        }
+        return item;
+      })
+    );
+  };
+
   const contextData = {
     screen,
     setScreen,
@@ -190,7 +208,8 @@ export const PaperProvider = ({ children }) => {
     updateActiveShopCash,
     model,
     setModel,
-    shopsForRender,
+    locationShopRelations,
+    updateRel,
   };
 
   return (

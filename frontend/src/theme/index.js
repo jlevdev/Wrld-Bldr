@@ -18,6 +18,7 @@ export const theme = {
     monochrome: {
       white: "#fff",
       offWhite: "#FDFDFB",
+      slategrey: "#43464d",
       slate: "#242527",
       black: "#090809",
     },

@@ -1,87 +1,110 @@
 import usePaper from "hooks/usePaper";
-import { useRef } from "react";
+import React, { Fragment, useRef } from "react";
 import styled from "styled-components";
-useRef;
 
 const Styled = {};
 
 Styled.Container = styled.div`
   display: flex;
+  flex-direction: column;
 `;
 
 Styled.SideBarNav = styled.div`
   display: flex;
+  width: 100%;
+  justify-content: space-evenly;
 `;
 
-Styled.NavItem = styled.span``;
+Styled.NavItem = styled.span`
+  padding: 10px;
+  width: 100%;
+  background: ${(props) => props.theme.colors.primary.darker};
+  color: white;
+  text-align: center;
 
-Styled.Collapse = styled.ul``;
+  &.selected {
+    border-bottom: solid 3px ${(props) => props.theme.colors.primary.dark};
+  }
 
-Styled.CollapseItem = styled.li``;
+  .selected {
+    border: 2px solid black;
+  }
 
-Styled.SideBarName = styled.span``;
+  :hover {
+    cursor: pointer;
+    color: black;
+    background: ${(props) => props.theme.colors.primary.dark};
+  }
 
-Styled.SideBarIcon = styled.span``;
+  :active {
+    opacity: 0.9;
+  }
+`;
 
-Styled.NPCList = styled.ul``;
+Styled.Collapse = styled.ul`
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  height: 576px;
+  width: 240px;
+  border-top: 15px solid ${(props) => props.theme.colors.monochrome.slategrey};
+  border-bottom: 15px solid
+    ${(props) => props.theme.colors.monochrome.slategrey};
+`;
 
-Styled.NPCItem = styled.li``;
+Styled.CollapseItem = styled.li`
+  display: flex;
+  flex-direction: column;
+  border-bottom: 2px solid ${(props) => props.theme.colors.monochrome.slategrey};
+`;
 
-function Sidebar() {
-  const { activeSettlement } = usePaper();
+Styled.SideBarName = styled.span`
+  width: 100%;
+  padding: 10px 10px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  border-left: 2px solid #00000000;
+
+  &:hover {
+    background: ${(props) => props.color};
+    border-left: 2px solid ${(props) => props.theme.colors.primary.dark};
+  }
+`;
+
+Styled.NPCItem = styled.span`
+  width: 100%;
+  padding: 10px 10px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  border-left: 2px solid #00000000;
+
+  &:before {
+    content: " > ";
+  }
+
+  &:hover {
+    background: ${(props) => props.color};
+    border-left: 2px solid ${(props) => props.theme.colors.primary.dark};
+  }
+`;
+
+const Sidebar = React.memo(() => {
+  const { locationShopRelations } = usePaper();
   const locationsRef = useRef(null);
   const optionsRef = useRef(null);
 
-  const handleCollapseClick = () => {};
-
-  /**
- * 
-
-        {activeSettlement.locations.map((s, index) => {
-          return (
-            <Styled.CollapseItem
-              className="shop"
-              onClick={(e) => {
-                //differentiates between npc clicks and town clicks
-                if (e.target.className == "sb-name") {
-                  s.startOnMouseDown();
-                }
-              }}
-              onMouseEnter={s.startHover}
-              onMouseLeave={s.endHover}
-              key={index}
-            >
-              <Styled.SideBarName>
-                {" "}
-                <Styled.SideBarIcon color={s.district.color} />
-                {s.locationData.name}{" "}
-              </Styled.SideBarName>
-              <Styled.NPCList>
-                {s.npcs.map((n, i) => {
-                  return (
-                    <Styled.NPCItem
-                      key={i}
-                      onClick={() => {
-                        setActiveShop(s);
-                        setActiveNPC(n);
-                      }}
-                    >
-                      {n.name}
-                    </Styled.NPCItem>
-                  );
-                })}
-              </Styled.NPCList>
-            </Styled.CollapseItem>
-          );
-        })}
- * 
- */
+  const handleCollapseClick = (e) => {};
 
   return (
     <Styled.Container>
       <Styled.SideBarNav>
         <Styled.NavItem
-          className={"sidebar-locations"}
+          className={"sidebar-locations selected"}
           onClick={handleCollapseClick}
           ref={locationsRef}
         >
@@ -95,9 +118,50 @@ function Sidebar() {
           Options
         </Styled.NavItem>
       </Styled.SideBarNav>
-      <Styled.Collapse></Styled.Collapse>
+      <Styled.Collapse>
+        {locationShopRelations.map((s) => {
+          return (
+            <Fragment key={s.location.id}>
+              {" "}
+              {s.district && (
+                <Styled.CollapseItem
+                  className="shop"
+                  onClick={(e) => {
+                    //differentiates between npc clicks and town clicks
+                    if (e.target.className == "sb-name") {
+                      s.startOnMouseDown();
+                    }
+                  }}
+                  onMouseEnter={s.startHover}
+                  onMouseLeave={s.endHover}
+                >
+                  <Styled.SideBarName color={s.district.color}>
+                    {s.location.name}
+                  </Styled.SideBarName>
+
+                  {s.location.npcs.map((n, i) => {
+                    return (
+                      <Styled.NPCItem
+                        key={n.id}
+                        color={s.district.color}
+                        onClick={() => {
+                          //TODO implement
+                          //setActiveShop(s);
+                          //setActiveNPC(n);
+                        }}
+                      >
+                        {n.name}
+                      </Styled.NPCItem>
+                    );
+                  })}
+                </Styled.CollapseItem>
+              )}
+            </Fragment>
+          );
+        })}
+      </Styled.Collapse>
     </Styled.Container>
   );
-}
+});
 
 export default Sidebar;
