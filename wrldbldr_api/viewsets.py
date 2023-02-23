@@ -50,6 +50,16 @@ class ItemViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     serializer_class = ItemSerializer
 
+    @action(methods=["get"], detail=False, url_path="searchlist", url_name="searchlist")
+    def get_unique_search_list(self):
+        distinct = (
+            Item.objects.values("name")
+            .annotate(name_count=Count("name"))
+            .filter(name_count=1)
+        )
+        unqiue_items = Item.objects.filter(name__in=[item["name"] for item in distinct])
+        return Response(data=ItemSerializer(unqiue_items).data)
+
 
 class LocationViewSet(viewsets.ModelViewSet):
     queryset = Location.objects.all()

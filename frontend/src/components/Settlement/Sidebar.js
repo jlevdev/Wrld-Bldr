@@ -94,7 +94,7 @@ Styled.NPCItem = styled.span`
 `;
 
 const Sidebar = React.memo(() => {
-  const { locationShopRelations } = usePaper();
+  const { locationShopRelations, setActiveShop } = usePaper();
   const locationsRef = useRef(null);
   const optionsRef = useRef(null);
 
@@ -126,11 +126,8 @@ const Sidebar = React.memo(() => {
               {s.district && (
                 <Styled.CollapseItem
                   className="shop"
-                  onClick={(e) => {
-                    //differentiates between npc clicks and town clicks
-                    if (e.target.className == "sb-name") {
-                      s.startOnMouseDown();
-                    }
+                  onClick={() => {
+                    setActiveShop(s);
                   }}
                   onMouseEnter={s.startHover}
                   onMouseLeave={s.endHover}
@@ -146,7 +143,7 @@ const Sidebar = React.memo(() => {
                         color={s.district.color}
                         onClick={() => {
                           //TODO implement
-                          //setActiveShop(s);
+                          setActiveShop(s);
                           //setActiveNPC(n);
                         }}
                       >

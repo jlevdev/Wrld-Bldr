@@ -1,45 +1,80 @@
 import { Autocomplete, TextField } from "@mui/material";
 import usePaper from "hooks/usePaper";
-import Item from "map/data/Item";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import styled from "styled-components";
 
 const Styled = {};
 
 Styled.Autocomplete = styled(Autocomplete)``;
 
-Styled.InventoryList = styled.ul``;
+Styled.InventoryGrid = styled.div`
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  overflow-x: visible;
+  grid-gap: 2px;
+  background: ${(props) => props.theme.colors.primary.darker};
+  border: 1px solid ${(props) => props.theme.colors.primary.darker};
 
-Styled.InventoryListItem = styled.li``;
+  > div {
+    background: ${(props) => props.theme.colors.monochrome.offWhite};
+    padding: 15px;
+  }
+`;
 
-Styled.ItemCounter = styled.span``;
+Styled.InventoryHeader = styled.div`
+  color: ${(props) => props.theme.colors.primary.darker};
+`;
 
-Styled.ItemControls = styled.span``;
+Styled.InventoryItem = styled.div`
+
+  &.inv-controls {
+    display: flex
+    flex-direction: row;
+    justify-content: space-between
+  }
+`;
 
 Styled.ItemControlsPlus = styled.span``;
 
 Styled.ItemControlsMinus = styled.span``;
 
 function InventoryPanel() {
-  const { activeShop } = usePaper();
+  const { activeShop, addItemToShop, removeItemFromShop, searchableItems } =
+    usePaper();
   const [inventorySearchVal, setInventorySearchVal] = useState("");
 
+  const getCurrencyString = (cashObj) => {
+    let str = "";
+    if (cashObj.copper)
+      return (str +=
+        cashObj.gold * 100 + cashObj.silver * 10 + cashObj.copper + " cp");
+    if (cashObj.silver)
+      return (str += cashObj.gold * 10 + cashObj.silver + " sp");
+    if (cashObj.gold) return (str += cashObj.gold + " gp");
+  };
+
   const addItem = (item) => {
-    activeShop.addItem(item);
+    addItemToShop({
+      shop: activeShop,
+      item,
+    });
   };
 
   const removeItem = (item) => {
-    activeShop.removeItem(item);
+    removeItemFromShop({
+      shop: activeShop,
+      item,
+    });
   };
 
   const handleSearchResultClick = (e, v, r) => {
-    if (!activeShop.addItem(v)) return;
-
-    setTimeout(() => {
-      setInventorySearchVal("");
-    }, 1000);
-    setInventorySearchVal(v);
+    //TODO: implement
   };
+
+  //console.log(searchableItems);
+  console.log(activeShop);
 
   return (
     <>
@@ -47,77 +82,72 @@ function InventoryPanel() {
         <>
           <Styled.Autocomplete
             disablePortal
-            options={Item.searchableItems}
+            options={searchableItems}
             getOptionLabel={(option) => option.name}
             onInputChange={handleSearchResultClick}
             style={{ background: "white", width: "100%", margin: "0 auto" }}
-            value={inventorySearchVal}
-            renderInput={(params) => <TextField {...params} />}
+            renderInput={(params) => (
+              <TextField placeholder="search for items..." {...params} />
+            )}
           />
-          <Styled.InventoryList>
-            {this.props.activeShop.inventory.map((t, index) => {
-              if (t.type == Item.SERVICE_TYPE) {
+          <Styled.InventoryGrid>
+            <Styled.InventoryHeader>Name</Styled.InventoryHeader>
+            <Styled.InventoryHeader>Quantity</Styled.InventoryHeader>
+            <Styled.InventoryHeader>Cost</Styled.InventoryHeader>
+            <Styled.InventoryHeader>Controls</Styled.InventoryHeader>
+            {activeShop.location.items.map((t, index) => {
+              const cost = getCurrencyString({
+                gold: t.gold,
+                silver: t.silver,
+                copper: t.copper,
+              });
+              if (t.is_service) {
                 return (
                   <li className="inv-service" key={index}>
-                    {t.name} - {t.cost}
+                    {t.name} - {cost}
                   </li>
                 );
               } else {
                 if (typeof t.rarity === "object") {
                   return (
-                    <Styled.InventoryListItem
-                      style={{ color: t.rarity["color"] }}
-                      key={index}
-                    >
-                      <Styled.ItemCounter className="inv-counter">
-                        {" "}
-                        {t.amount}{" "}
-                      </Styled.ItemCounter>
-                      {t.name} - {t.cost}
-                      <Styled.ItemControls className="inv-controls">
+                    //style={{ color: t.rarity ? t.rarity["color"] : "#000" }}
+                    <Fragment key={index}>
+                      <Styled.InventoryItem key={index + "-name"}>
+                        {t.name}
+                      </Styled.InventoryItem>
+                      <Styled.InventoryItem key={index + "-quantity"}>
+                        {t.quantity}
+                      </Styled.InventoryItem>
+                      <Styled.InventoryItem key={index + "-cost"}>
+                        {cost}
+                      </Styled.InventoryItem>
+                      <Styled.InventoryItem
+                        className={"inv-controls"}
+                        key={index + "-controls"}
+                      >
                         <Styled.ItemControlsPlus
                           onClick={() => {
                             addItem(t);
                           }}
                           className="inv-plus"
-                        ></Styled.ItemControlsPlus>
+                        >
+                          {"+"}
+                        </Styled.ItemControlsPlus>
                         <Styled.ItemControlsMinus
                           onClick={() => {
                             removeItem(t);
                           }}
                           className="inv-minus"
-                        ></Styled.ItemControlsMinus>
-                      </Styled.ItemControls>
-                    </Styled.InventoryListItem>
-                  );
-                } else {
-                  return (
-                    <Styled.InventoryListItem key={index}>
-                      <Styled.ItemCounter className="inv-counter">
-                        {" "}
-                        {t.amount}{" "}
-                      </Styled.ItemCounter>
-                      {t.name} - {t.cost}
-                      <Styled.ItemControls className="inv-controls">
-                        <Styled.ItemControlsPlus
-                          onClick={() => {
-                            addItem(t);
-                          }}
-                          className="inv-plus"
-                        ></Styled.ItemControlsPlus>
-                        <Styled.ItemControlsMinus
-                          onClick={() => {
-                            removeItem(t);
-                          }}
-                          className="inv-minus"
-                        ></Styled.ItemControlsMinus>
-                      </Styled.ItemControls>
-                    </Styled.InventoryListItem>
+                        >
+                          {"-"}
+                        </Styled.ItemControlsMinus>
+                      </Styled.InventoryItem>
+                    </Fragment>
                   );
                 }
               }
             })}
-          </Styled.InventoryList>
+          </Styled.InventoryGrid>
         </>
       )}
     </>

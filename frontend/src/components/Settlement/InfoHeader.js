@@ -11,20 +11,42 @@ Styled.Container = styled.div`
 
 Styled.ShopContainer = styled.div`
   display: flex;
+  flex-direction: column;
 `;
 
 Styled.ShopTypeTitle = styled.span``;
 
-Styled.ShopFinances = styled.div``;
+Styled.ShopFinances = styled.div`
+  padding: 10px;
+`;
 
 Styled.NPCPortraits = styled.div`
   display: flex;
+`;
+
+Styled.CoinContainer = styled.span`
+  &.gold {
+    background: ${(props) => props.theme.colors.metals.gold};
+  }
+  &.silver {
+    background: ${(props) => props.theme.colors.metals.silver};
+  }
+  &.copper {
+    background: ${(props) => props.theme.colors.metals.copper};
+  }
+
+  color: black;
+  padding: 15px;
 `;
 
 Styled.CoinInput = styled(Input)`
   margin-right: 10px;
   min-width: 40px;
   max-width: 100px;
+`;
+
+Styled.ShopHeading = styled(Heading)`
+  padding: 10px;
 `;
 
 const InfoHeader = () => {
@@ -50,49 +72,58 @@ const InfoHeader = () => {
       copper: activeShop.copper,
     });
   };
-
+  console.log(activeShop && activeShop.location);
   return (
     activeShop && (
       <Styled.Container>
         <Styled.ShopContainer>
-          <Heading size={3}>
-            {activeShop.name}
+          <Styled.ShopHeading size={3}>
+            {activeShop.location.name}
+            {" - "}
             <Styled.ShopTypeTitle>
-              {activeShop.fiscalStatus} {activeShop.type}
+              {activeShop.location.fiscal_status}{" "}
+              {activeShop.location.location_type.name}
             </Styled.ShopTypeTitle>
-            <Styled.ShopFinances>
+          </Styled.ShopHeading>
+          <Styled.ShopFinances>
+            <Styled.CoinContainer className="gold">
               <i>gold &nbsp;</i>
               <Styled.CoinInput
                 onChange={handleInputChange}
                 className="gold-counter"
                 type="number"
-                defaultValue={activeShop.cash.gold}
+                defaultValue={activeShop.location.gold}
               />
+            </Styled.CoinContainer>
 
+            <Styled.CoinContainer className="silver">
               <i>silver &nbsp;</i>
+
               <Styled.CoinInput
                 onChange={handleInputChange}
                 className="silver-counter"
                 type="number"
-                defaultValue={activeShop.cash.silver}
+                defaultValue={activeShop.location.silver}
               />
+            </Styled.CoinContainer>
 
+            <Styled.CoinContainer className="copper">
               <i>copper &nbsp;</i>
               <Styled.CoinInput
                 onChange={handleInputChange}
                 className="copper-counter"
                 type="number"
-                defaultValue={activeShop.cash.copper}
+                defaultValue={activeShop.location.copper}
               />
-            </Styled.ShopFinances>
-          </Heading>
+            </Styled.CoinContainer>
+          </Styled.ShopFinances>
         </Styled.ShopContainer>
         <Styled.NPCPortraits>
-          {activeShop.npcs.map((n, i) => {
+          {activeShop.location.npcs.map((n, i) => {
             return (
               <span
                 onClick={() => {
-                  setActiveNPC(n);
+                  //setActiveNPC(n);
                 }}
                 key={i}
                 style={{

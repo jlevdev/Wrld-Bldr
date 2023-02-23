@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import React from "react";
 
 const Styled = {};
 
@@ -25,12 +24,12 @@ Styled.H3 = styled.h3`
 `;
 
 export const Heading = (props) => {
-  const { size = 1, children, style } = props;
+  const { size = 1, children, ...restProps } = props;
   return (
     <>
-      {(size == 1 || !size) && <Styled.H1 style={style}>{children}</Styled.H1>}
-      {size == 2 && <Styled.H2 style={style}>{children}</Styled.H2>}
-      {size == 3 && <Styled.H3>{children}</Styled.H3>}
+      {(size == 1 || !size) && <Styled.H1 {...restProps}>{children}</Styled.H1>}
+      {size == 2 && <Styled.H2 {...restProps}>{children}</Styled.H2>}
+      {size == 3 && <Styled.H3 {...restProps}>{children}</Styled.H3>}
     </>
   );
 };

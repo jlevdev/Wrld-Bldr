@@ -22,6 +22,11 @@ export const theme = {
       slate: "#242527",
       black: "#090809",
     },
+    metals: {
+      gold: "#85754E",
+      silver: "#C9C0BB",
+      copper: "#DA8A67",
+    },
   },
   fontSizes: {
     h1: "42px",

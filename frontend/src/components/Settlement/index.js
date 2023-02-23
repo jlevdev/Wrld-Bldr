@@ -32,7 +32,7 @@ Styled.TopContainer = styled.div`
 
 Styled.InfoContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 `;
 
 Styled.PaperContainer = styled.div`

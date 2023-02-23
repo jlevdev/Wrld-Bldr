@@ -163,7 +163,7 @@ const Shop = React.memo((props) => {
         })}
         fillColor={shopFillColor}
         onClick={() => {
-          //TODO setActiveShop(lsRelations);
+          setActiveShop(lsRelations);
         }}
         onMouseEnter={() => {
           startHover();
@@ -190,8 +190,14 @@ const Shop = React.memo((props) => {
 });
 
 const Paper = React.memo(() => {
-  const { screen, model, activeSettlement, locationShopRelations, updateRel } =
-    usePaper();
+  const {
+    screen,
+    model,
+    activeSettlement,
+    locationShopRelations,
+    updateRel,
+    setActiveShop,
+  } = usePaper();
   const palette = DEFAULT_PALETTE;
 
   return (
@@ -287,6 +293,7 @@ const Paper = React.memo(() => {
                     strokeWidth={NORMAL_STROKE * 3}
                     lsRelations={locData}
                     updateRel={updateRel}
+                    setActiveShop={setActiveShop}
                   />
                 );
               } else if (Ward.sceneryWards.indexOf(label) != -1) {

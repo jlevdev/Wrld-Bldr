@@ -20,6 +20,7 @@ export const PaperProvider = ({ children }) => {
   const [activeNPC, setActiveNPC] = useState(null);
   const [model, setModel] = useState(null);
   const [locationShopRelations, setLocationShopRelations] = useState([]);
+  const [searchableItems, setSearchableItems] = useState([]);
 
   const axios = useAxios();
   const navigate = useNavigate();
@@ -130,6 +131,15 @@ export const PaperProvider = ({ children }) => {
       .catch((err) => console.log(err));
   };
 
+  const initSearchableItems = async () => {
+    return axios
+      .get("/item/searchlist")
+      .then((res) => {
+        setSearchableItems(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const getCaches = (settlement) => {
     const cache = {};
 
@@ -147,6 +157,7 @@ export const PaperProvider = ({ children }) => {
 
   const prepareMapAndNavigate = async (settlement) => {
     Model.instance = null;
+    await initSearchableItems();
     setLocationShopRelations(
       settlement.locations.map((location) => {
         return {
@@ -194,6 +205,16 @@ export const PaperProvider = ({ children }) => {
     );
   };
 
+  const addItemToShop = (options) => {
+    const { shop, item } = options;
+    //TODO implement
+  };
+
+  const removeItemFromShop = (options) => {
+    const { shop, item } = options;
+    //TODO implement
+  };
+
   const contextData = {
     screen,
     setScreen,
@@ -210,6 +231,9 @@ export const PaperProvider = ({ children }) => {
     setModel,
     locationShopRelations,
     updateRel,
+    addItemToShop,
+    removeItemFromShop,
+    searchableItems,
   };
 
   return (
