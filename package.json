@@ -14,10 +14,10 @@
     "styled-components": "^5.3.6"
   },
   "scripts": {
-    "watch": "concurrently \"webpack --mode development --watch\" \"python ./manage.py runserver 0.0.0.0:80\"",
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
     "backend": "python ./manage.py runserver 0.0.0.0:80",
     "frontend": "webpack --mode development --watch",
-    "build": "webpack --mode production"
+    "build-frontend": "webpack --mode production"
   },
   "eslintConfig": {
     "extends": [

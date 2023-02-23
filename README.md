@@ -21,3 +21,7 @@
 
 ### Notes
 - my setup uses black for the formatter (+ isort vscode extension)
+- default users are
+  - (superuser) admin/admin
+  - (standard user) gary/iroll20s
+- admins work on the /admin panel and as normal logins on the FE
